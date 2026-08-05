@@ -1,0 +1,13 @@
+{
+  "itemGroup.villagerenhanced": "Example Mod Tab",
+  "block.villagerenhanced.example_block": "Example Block",
+  "item.villagerenhanced.example_item": "Example Item",
+
+  "villagerenhanced.configuration.title": "Villager Enhanced Configs",
+  "villagerenhanced.configuration.section.villagerenhanced.common.toml": "Villager Enhanced Configs",
+  "villagerenhanced.configuration.section.villagerenhanced.common.toml.title": "Villager Enhanced Configs",
+  "villagerenhanced.configuration.items": "Item List",
+  "villagerenhanced.configuration.logDirtBlock": "Log Dirt Block",
+  "villagerenhanced.configuration.magicNumberIntroduction": "Magic Number Text",
+  "villagerenhanced.configuration.magicNumber": "Magic Number"
+}
