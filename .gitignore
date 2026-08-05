@@ -35,6 +35,14 @@ bin/
 ### Minecraft Modding ###
 run/
 !**/src/**/run/
+# Extra client run directories, one per test username (see the runs block in build.gradle).
+run-*/
 **/src/generated/**/.cache/
 repo/
 !**/src/**/repo/
+
+### Other ###
+# Deliberately matches at any depth, including docs/PLAN.md.
+# The design document is a personal working file for this machine only and is
+# intentionally never committed.
+PLAN.md

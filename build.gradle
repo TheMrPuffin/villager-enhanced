@@ -14,7 +14,12 @@ tasks.named('wrapper', Wrapper).configure {
     distributionType = Wrapper.DistributionType.BIN
 }
 
-version = mod_version
+// The jar is named <archivesName>-<version>.jar, so folding the Minecraft version in here
+// makes builds for different Minecraft versions distinguishable at a glance:
+//     villagerenhanced-26.2-0.1.0.jar
+// The mod's own version stays plain SemVer in neoforge.mods.toml, since that is what NeoForge
+// resolves dependency ranges against.
+version = "${minecraft_version}-${mod_version}"
 group = mod_group_id
 
 sourceSets.main.resources {
@@ -52,6 +57,31 @@ neoForge {
             client()
             // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
             systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+        }
+
+        // Extra clients for multiplayer testing against runServer.
+        //
+        // Two things are needed to run more than one client at once:
+        //
+        //  1. --username. In dev this defaults to "Dev", so without it every client is the same
+        //     player and the server rejects the second login as a duplicate. The player's UUID
+        //     is derived from the username when no --uuid is given, so a distinct name is enough
+        //     to make a genuinely distinct player.
+        //  2. A separate gameDirectory. Clients sharing run/ fight over options.txt, the log
+        //     files and the session lock.
+        //
+        // These appear in IntelliJ as runClientDev01 / runClientDev02 after a Gradle sync. The
+        // default runClient still exists and plays as "Dev", so three identities are available.
+        clientDev01 {
+            client()
+            gameDirectory = project.file('run-dev01')
+            programArguments.addAll '--username', 'dev01'
+        }
+
+        clientDev02 {
+            client()
+            gameDirectory = project.file('run-dev02')
+            programArguments.addAll '--username', 'dev02'
         }
 
         server {

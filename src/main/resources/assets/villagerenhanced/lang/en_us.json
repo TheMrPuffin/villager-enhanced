@@ -1,13 +1,13 @@
 {
-  "itemGroup.villagerenhanced": "Example Mod Tab",
-  "block.villagerenhanced.example_block": "Example Block",
-  "item.villagerenhanced.example_item": "Example Item",
+  "villagerenhanced.dialogue.greeting": "Hello, %s!",
+  "villagerenhanced.dialogue.subtitle": "%s · Level %s",
+  "villagerenhanced.dialogue.option.trade": "Trade",
+  "villagerenhanced.dialogue.option.leave": "Leave",
 
-  "villagerenhanced.configuration.title": "Villager Enhanced Configs",
-  "villagerenhanced.configuration.section.villagerenhanced.common.toml": "Villager Enhanced Configs",
-  "villagerenhanced.configuration.section.villagerenhanced.common.toml.title": "Villager Enhanced Configs",
-  "villagerenhanced.configuration.items": "Item List",
-  "villagerenhanced.configuration.logDirtBlock": "Log Dirt Block",
-  "villagerenhanced.configuration.magicNumberIntroduction": "Magic Number Text",
-  "villagerenhanced.configuration.magicNumber": "Magic Number"
+  "villagerenhanced.dialogue.no_trades": "They have nothing to trade right now.",
+  "villagerenhanced.dialogue.busy": "They're busy talking to someone else.",
+
+  "villagerenhanced.dialogue.closed.too_far": "You walked away from the conversation.",
+  "villagerenhanced.dialogue.closed.villager_gone": "They're no longer here.",
+  "villagerenhanced.dialogue.closed.gone": "The conversation ended."
 }
