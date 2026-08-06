@@ -1,12 +1,17 @@
 name: Release
 
-# Triggered by pushing a version tag, e.g.:
-#     git tag -a v0.1.0 -m "First playable release"
-#     git push origin v0.1.0
 on:
+  # Normal path: push a version tag.
+  #     git tag -a v0.2.0 -m "..."
+  #     git push origin v0.2.0
   push:
     tags:
       - 'v*'
+
+  # Recovery path: run it by hand from the Actions tab. Pick the tag you want in the
+  # "Use workflow from" dropdown -- GitHub allows tags there, not just branches. Useful when a
+  # tag push fails to raise an event, which saves deleting and re-pushing the tag.
+  workflow_dispatch:
 
 # Needed to create the release and upload the jar to it.
 permissions:
@@ -16,6 +21,15 @@ jobs:
   release:
     runs-on: ubuntu-latest
     steps:
+      # workflow_dispatch happily runs from a branch, where github.ref_name would be something
+      # like "main" and we would try to create a release named after a branch. Fail loudly
+      # instead of producing nonsense.
+      - name: Require a tag
+        if: github.ref_type != 'tag'
+        run: |
+          echo "::error::This workflow must run from a tag. Choose a tag such as v0.2.0 in the 'Use workflow from' dropdown."
+          exit 1
+
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
@@ -34,21 +48,59 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build
 
-      # Uses the GitHub CLI, which is preinstalled on the runner, rather than a third-party
-      # action -- one less dependency to trust with write access to the repository.
-      - name: Create GitHub Release
+      # Release notes come from CHANGELOG.md so there is a single place to write them and the
+      # published notes always match the file in the repository. Falls back to notes generated
+      # from commit history when the tag has no matching changelog section.
+      - name: Extract release notes from CHANGELOG
+        env:
+          TAG: ${{ github.ref_name }}
+        run: |
+          VERSION="${TAG#v}"
+
+          # Print everything between this version's "## [x.y.z]" heading and whatever ends the
+          # section: the next "## [" heading, or the link-reference block at the foot of the
+          # file. The version is passed in as an awk variable rather than interpolated into the
+          # program, so a tag containing regex characters cannot break the match.
+          awk -v version="$VERSION" '
+            index($0, "## [" version "]") == 1 { found = 1; next }
+            found && index($0, "## [") == 1    { exit }
+            found && /^\[[^][]+\]: /           { exit }
+            found                              { print }
+          ' CHANGELOG.md > release-notes.md
+
+          if [ -s release-notes.md ]; then
+            echo "Found CHANGELOG section for $VERSION."
+          else
+            echo "::warning::No CHANGELOG section found for $VERSION; falling back to generated notes."
+          fi
+
+      # Uses the GitHub CLI, preinstalled on the runner, rather than a third-party action --
+      # one less dependency to trust with write access to the repository.
+      - name: Create or update GitHub Release
         env:
           GH_TOKEN: ${{ github.token }}
           TAG: ${{ github.ref_name }}
         run: |
-          # Everything before 1.0 is marked pre-release. The mod also targets a beta NeoForge
-          # line, so this stays accurate for a while yet.
+          # Everything before 1.0 is a pre-release. The mod also targets a beta NeoForge line,
+          # so this stays accurate for a while yet.
           PRERELEASE=""
           case "$TAG" in
             v0.*) PRERELEASE="--prerelease" ;;
           esac
 
-          gh release create "$TAG" build/libs/*.jar \
-            --title "$TAG" \
-            --generate-notes \
-            $PRERELEASE
+          NOTES="--generate-notes"
+          if [ -s release-notes.md ]; then
+            NOTES="--notes-file release-notes.md"
+          fi
+
+          # Re-running for an existing tag should refresh the assets rather than fail, so the
+          # manual dispatch above is genuinely usable as a recovery button.
+          if gh release view "$TAG" > /dev/null 2>&1; then
+            echo "Release $TAG already exists; replacing its assets."
+            gh release upload "$TAG" build/libs/*.jar --clobber
+          else
+            gh release create "$TAG" build/libs/*.jar \
+              --title "$TAG" \
+              $NOTES \
+              $PRERELEASE
+          fi
