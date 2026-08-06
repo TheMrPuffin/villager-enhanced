@@ -13,5 +13,13 @@ import net.minecraft.world.level.Level;
  *
  * @param dimension  which world the villager is in
  * @param villagerId the villager's entity id within that world
+ * @param page       which part of the conversation the player is on, so the server can tell
+ *                   which options it actually offered
  */
-public record DialogueSession(ResourceKey<Level> dimension, int villagerId) {}
+public record DialogueSession(ResourceKey<Level> dimension, int villagerId, DialoguePage page) {
+
+    /** This session, moved to a different page. Records are immutable, so this returns a copy. */
+    public DialogueSession withPage(DialoguePage newPage) {
+        return new DialogueSession(this.dimension, this.villagerId, newPage);
+    }
+}

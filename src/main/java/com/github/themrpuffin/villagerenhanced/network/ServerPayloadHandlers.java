@@ -2,7 +2,9 @@ package com.github.themrpuffin.villagerenhanced.network;
 
 import com.github.themrpuffin.villagerenhanced.VillagerEnhanced;
 import com.github.themrpuffin.villagerenhanced.dialogue.DialogueBuilder;
+import com.github.themrpuffin.villagerenhanced.dialogue.DialoguePage;
 import com.github.themrpuffin.villagerenhanced.dialogue.DialogueSessionManager;
+import com.github.themrpuffin.villagerenhanced.dialogue.VillagerGifts;
 import com.github.themrpuffin.villagerenhanced.dialogue.VillagerTrading;
 
 import net.minecraft.server.level.ServerPlayer;
@@ -63,12 +65,14 @@ public final class ServerPayloadHandlers {
             return;
         }
 
-        // 6. The option must be on offer, and enabled, right now. The codec guaranteed the
-        //    value is a real enum member, but not that it was on the menu.
-        if (!DialogueBuilder.isOptionAllowed(player, villager, payload.option())) {
+        // 6. The option must be on offer on the page they are actually looking at, and enabled.
+        //    The codec guaranteed the value is a real enum member, but not that it was on this
+        //    menu -- "Back" exists only on the reputation page, "Trade" only on the greeting.
+        DialoguePage page = DialogueSessionManager.currentPage(player);
+        if (page == null || !DialogueBuilder.isOptionAllowed(player, villager, page, payload.option())) {
             VillagerEnhanced.LOGGER.debug(
-                    "Rejected dialogue option from {}: {} is not currently offered by villager {}",
-                    player.getName().getString(), payload.option(), villager.getUUID());
+                    "Rejected dialogue option from {}: {} is not offered on page {} by villager {}",
+                    player.getName().getString(), payload.option(), page, villager.getUUID());
             return;
         }
 
@@ -84,6 +88,16 @@ public final class ServerPayloadHandlers {
                     villager.setTradingPlayer(null);
                 }
             }
+            case GIFT -> {
+                // Re-checked inside give(), since the player may have swapped items between the
+                // page being sent and the button being clicked.
+                VillagerGifts.give(player, villager);
+                // Resend either way: on success the Gift option may now be disabled because the
+                // last of the stack was handed over, and on failure the page corrects itself.
+                DialogueBuilder.send(player, villager, DialoguePage.GREETING);
+            }
+            case VIEW_REPUTATION -> DialogueBuilder.send(player, villager, DialoguePage.REPUTATION);
+            case BACK -> DialogueBuilder.send(player, villager, DialoguePage.GREETING);
             // The client closes its own screen for Leave; the server just tidies up. Null
             // reason means "no need to tell the client" -- it already knows.
             case LEAVE -> DialogueSessionManager.close(player, null);

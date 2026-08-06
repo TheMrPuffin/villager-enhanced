@@ -6,18 +6,21 @@ import com.github.themrpuffin.villagerenhanced.network.ChooseDialogueOptionPaylo
 import com.github.themrpuffin.villagerenhanced.network.CloseDialoguePayload;
 import com.github.themrpuffin.villagerenhanced.network.OpenDialoguePayload;
 
+import net.minecraft.client.gui.ActiveTextCollector;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.TextAlignment;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.MultiLineLabel;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
 /**
- * The dialogue window: a greeting plus the options the server offered.
+ * The dialogue window: what the villager is saying, plus the options the server offered.
  *
- * <p>Everything drawn here arrives in the {@link OpenDialoguePayload}. The screen makes no
- * decisions about what a villager can do.
+ * <p>Everything drawn here arrives in an {@link OpenDialoguePayload}, including the speech
+ * itself. The screen makes no decisions about what a villager can say or do.
  *
  * <p><b>Rendering in 26.2 differs from older Minecraft versions.</b> Screens no longer have a
  * {@code render(GuiGraphics, ...)} method that draws immediately. The game runs two phases:
@@ -34,46 +37,75 @@ public class VillagerDialogueScreen extends Screen {
 
     private static final int TITLE_Y = 40;
     private static final int SUBTITLE_Y = 55;
-    private static final int GREETING_Y = 75;
+    private static final int BODY_Y = 78;
+    /** Vanilla's standard text line height. */
+    private static final int LINE_HEIGHT = 9;
+    /** Left and right margin for wrapped body text. */
+    private static final int BODY_MARGIN = 40;
 
     /** Packed ARGB. -1 is opaque white; 0xFFAAAAAA is vanilla's secondary-text grey. */
     private static final int WHITE = -1;
     private static final int GREY = 0xFFAAAAAA;
 
-    private final OpenDialoguePayload dialogue;
-    private final Component subtitle;
-    private final Component greeting;
+    /** The server's description of the current page. Replaced wholesale by {@link #update}. */
+    private OpenDialoguePayload dialogue;
+
+    private Component subtitle;
+
+    /** Built in {@link #init()}, because wrapping needs to know the screen width. */
+    private MultiLineLabel body = MultiLineLabel.EMPTY;
 
     /** Set when the server closed this screen, so {@link #removed()} does not answer back. */
     private boolean suppressCloseMessage;
 
-    /**
-     * @param dialogue   the server's description of this conversation
-     * @param playerName the player's name, so the greeting can address them
-     */
-    public VillagerDialogueScreen(OpenDialoguePayload dialogue, Component playerName) {
+    public VillagerDialogueScreen(OpenDialoguePayload dialogue) {
         super(dialogue.villagerName());
         this.dialogue = dialogue;
-
-        // Values are passed as arguments so translators can reorder them; languages do not all
-        // arrange sentences the way English does.
-        this.subtitle = Component.translatable(
-                "villagerenhanced.dialogue.subtitle",
-                dialogue.professionName(),
-                dialogue.villagerLevel());
-        this.greeting = Component.translatable("villagerenhanced.dialogue.greeting", playerName);
+        this.subtitle = buildSubtitle(dialogue);
     }
 
     /**
-     * Called when the screen opens and again on resize, so it must be safe to run repeatedly —
-     * which it is, because the parent clears the widget list first.
+     * Swaps in a new page of the same conversation.
+     *
+     * <p>Deliberately <b>not</b> done by opening a replacement screen. {@code Gui#setScreen}
+     * calls {@code removed()} on the outgoing screen, which would send a
+     * {@code CloseDialoguePayload} and end the very session the new page belongs to. Updating
+     * in place and rebuilding the widgets avoids that entirely.
+     */
+    public void update(OpenDialoguePayload payload) {
+        this.dialogue = payload;
+        this.subtitle = buildSubtitle(payload);
+        this.rebuildWidgets();
+    }
+
+    /** Is this screen showing a conversation with the given villager? */
+    public boolean isFor(int villagerId) {
+        return this.dialogue.villagerId() == villagerId;
+    }
+
+    private static Component buildSubtitle(OpenDialoguePayload payload) {
+        // Values are passed as arguments so translators can reorder them; languages do not all
+        // arrange sentences the way English does.
+        return Component.translatable(
+                "villagerenhanced.dialogue.subtitle",
+                payload.professionName(),
+                payload.villagerLevel());
+    }
+
+    /**
+     * Called when the screen opens, on resize, and on every {@link #update}, so it must be safe
+     * to run repeatedly — which it is, because the parent clears the widget list first.
      */
     @Override
     protected void init() {
         super.init();
 
+        this.body = MultiLineLabel.create(this.font, this.dialogue.body(), this.width - BODY_MARGIN * 2);
+
         int x = (this.width - BUTTON_WIDTH) / 2;
-        int y = this.height / 2;
+        // Keep the buttons below the speech however many lines it wrapped to, but never higher
+        // than the middle of the screen, so short pages still look centred.
+        int y = Math.max(this.height / 2, BODY_Y + this.body.getLineCount() * LINE_HEIGHT + 12);
 
         // One button per option the server sent, in its order. Adding an option server-side
         // makes it appear here with no client change beyond a label.
@@ -98,6 +130,9 @@ public class VillagerDialogueScreen extends Screen {
     private static Component labelFor(DialogueOption option) {
         return switch (option) {
             case TRADE -> Component.translatable("villagerenhanced.dialogue.option.trade");
+            case GIFT -> Component.translatable("villagerenhanced.dialogue.option.gift");
+            case VIEW_REPUTATION -> Component.translatable("villagerenhanced.dialogue.option.view_reputation");
+            case BACK -> Component.translatable("villagerenhanced.dialogue.option.back");
             case LEAVE -> Component.translatable("villagerenhanced.dialogue.option.leave");
         };
     }
@@ -105,16 +140,18 @@ public class VillagerDialogueScreen extends Screen {
     private static Tooltip disabledReasonFor(DialogueOption option) {
         return switch (option) {
             case TRADE -> Tooltip.create(Component.translatable("villagerenhanced.dialogue.no_trades"));
-            case LEAVE -> null;
+            case GIFT -> Tooltip.create(Component.translatable("villagerenhanced.dialogue.no_gift"));
+            case VIEW_REPUTATION, BACK, LEAVE -> null;
         };
     }
 
     /**
      * Tells the server which option was clicked.
      *
-     * <p>Note it does not close the screen for TRADE. The server decides whether trading is
-     * allowed, and opening the merchant screen replaces this one automatically; closing
-     * optimistically would leave the player staring at nothing if the server refused.
+     * <p>Only LEAVE closes the screen here. Everything else is the server's decision: TRADE is
+     * replaced by the merchant screen if allowed, and the navigation options come back as an
+     * {@link #update}. Closing optimistically would leave the player staring at nothing if the
+     * server refused.
      */
     private void choose(DialogueOptionEntry entry) {
         ClientPacketDistributor.sendToServer(
@@ -160,7 +197,10 @@ public class VillagerDialogueScreen extends Screen {
         // drawCenteredString() no longer exist.
         graphics.centeredText(this.font, this.title, this.width / 2, TITLE_Y, WHITE);
         graphics.centeredText(this.font, this.subtitle, this.width / 2, SUBTITLE_Y, GREY);
-        graphics.centeredText(this.font, this.greeting, this.width / 2, GREETING_Y, GREY);
+
+        // Wrapped text goes through the text collector rather than a direct draw call.
+        ActiveTextCollector textRenderer = graphics.textRenderer();
+        this.body.visitLines(TextAlignment.CENTER, this.width / 2, BODY_Y, LINE_HEIGHT, textRenderer);
     }
 
     /**

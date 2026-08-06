@@ -20,7 +20,9 @@ public final class VillagerEnhancedNetwork {
      * Bump whenever a payload's fields change, so an old client meeting a new server is
      * rejected at connect time rather than misreading bytes later.
      */
-    private static final String NETWORK_VERSION = "1";
+    // 2: OpenDialoguePayload replaced its raw reputation int with a server-composed body
+    //    Component, and DialogueOption gained VIEW_REPUTATION and BACK.
+    private static final String NETWORK_VERSION = "2";
 
     private VillagerEnhancedNetwork() {}
 

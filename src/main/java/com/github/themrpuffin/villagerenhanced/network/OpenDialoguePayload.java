@@ -22,19 +22,24 @@ import net.minecraft.resources.Identifier;
  * <p>The buffer is a {@code RegistryFriendlyByteBuf} rather than a plain {@code ByteBuf}
  * because sending a {@code Component} needs registry access — text can embed item references.
  *
+ * <p>Also used to <b>update</b> an already-open dialogue when the player navigates to another
+ * page. The client must update its screen in place rather than opening a new one — replacing a
+ * screen fires {@code removed()} on the old one, which would send a {@code CloseDialoguePayload}
+ * and end the very session the new page belongs to.
+ *
  * @param villagerId     entity id, so the client can name the villager when replying
  * @param villagerName   display name, resolved server-side
  * @param professionName profession display name, e.g. "Farmer"
  * @param villagerLevel  trade level, 1–5
- * @param reputation     raw gossip score for this player; displayed as a tier in M5
- * @param options        what this villager offers, and which options are usable
+ * @param body           what the villager is saying on this page, composed server-side
+ * @param options        what this villager offers here, and which options are usable
  */
 public record OpenDialoguePayload(
         int villagerId,
         Component villagerName,
         Component professionName,
         int villagerLevel,
-        int reputation,
+        Component body,
         List<DialogueOptionEntry> options) implements CustomPacketPayload {
 
     public static final CustomPacketPayload.Type<OpenDialoguePayload> TYPE =
@@ -51,7 +56,7 @@ public record OpenDialoguePayload(
                     ComponentSerialization.STREAM_CODEC, OpenDialoguePayload::villagerName,
                     ComponentSerialization.STREAM_CODEC, OpenDialoguePayload::professionName,
                     ByteBufCodecs.VAR_INT, OpenDialoguePayload::villagerLevel,
-                    ByteBufCodecs.VAR_INT, OpenDialoguePayload::reputation,
+                    ComponentSerialization.STREAM_CODEC, OpenDialoguePayload::body,
                     DialogueOptionEntry.STREAM_CODEC.apply(ByteBufCodecs.list()), OpenDialoguePayload::options,
                     OpenDialoguePayload::new);
 

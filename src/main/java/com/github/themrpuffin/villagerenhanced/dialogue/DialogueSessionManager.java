@@ -58,7 +58,8 @@ public final class DialogueSessionManager {
         close(player, null);
 
         villager.setTradingPlayer(player);
-        SESSIONS.put(player.getUUID(), new DialogueSession(player.level().dimension(), villager.getId()));
+        SESSIONS.put(player.getUUID(), new DialogueSession(
+                player.level().dimension(), villager.getId(), DialoguePage.GREETING));
     }
 
     /** Is this player currently in a dialogue with this specific villager? */
@@ -67,6 +68,22 @@ public final class DialogueSessionManager {
         return session != null
                 && session.villagerId() == villager.getId()
                 && session.dimension().equals(player.level().dimension());
+    }
+
+    /** Which page this player is on, or null if they are not in a conversation. */
+    public static @Nullable DialoguePage currentPage(ServerPlayer player) {
+        DialogueSession session = SESSIONS.get(player.getUUID());
+        return session == null ? null : session.page();
+    }
+
+    /**
+     * Records that the player has navigated to a different page.
+     *
+     * <p>A no-op without a session, so sending a page to somebody who is not in a conversation
+     * cannot conjure one.
+     */
+    public static void setPage(ServerPlayer player, DialoguePage page) {
+        SESSIONS.computeIfPresent(player.getUUID(), (uuid, session) -> session.withPage(page));
     }
 
     /**

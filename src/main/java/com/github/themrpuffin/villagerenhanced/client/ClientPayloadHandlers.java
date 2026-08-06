@@ -32,7 +32,12 @@ public final class ClientPayloadHandlers {
     }
 
     /**
-     * The server has started a dialogue: open the window and draw what it sent.
+     * The server has sent a page of dialogue: show it.
+     *
+     * <p>If a dialogue with this villager is already open, the page is swapped **in place**.
+     * Opening a replacement screen would make {@code Gui#setScreen} call {@code removed()} on
+     * the outgoing one, which sends a {@code CloseDialoguePayload} and ends the session the new
+     * page belongs to — leaving every subsequent click rejected.
      *
      * <p>Nothing to validate — unlike the serverbound direction, this comes from the authority.
      */
@@ -42,7 +47,12 @@ public final class ClientPayloadHandlers {
             return;
         }
 
-        minecraft.gui.setScreen(new VillagerDialogueScreen(payload, minecraft.player.getName()));
+        if (minecraft.gui.screen() instanceof VillagerDialogueScreen open
+                && open.isFor(payload.villagerId())) {
+            open.update(payload);
+        } else {
+            minecraft.gui.setScreen(new VillagerDialogueScreen(payload));
+        }
     }
 
     /**

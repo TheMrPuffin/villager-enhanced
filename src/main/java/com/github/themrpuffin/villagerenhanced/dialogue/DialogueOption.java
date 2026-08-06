@@ -14,7 +14,13 @@ public enum DialogueOption {
     /** Hand off to the vanilla merchant screen. */
     TRADE,
     /** Close the dialogue. */
-    LEAVE;
+    LEAVE,
+    /** Ask how this villager regards you. */
+    VIEW_REPUTATION,
+    /** Return to the greeting page. */
+    BACK,
+    /** Give the villager whatever is in your main hand. */
+    GIFT;
 
     /** {@code values()} allocates a new array per call, and this is read for every packet. */
     private static final DialogueOption[] VALUES = values();

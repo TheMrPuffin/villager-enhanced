@@ -1,7 +1,6 @@
 package com.github.themrpuffin.villagerenhanced.dialogue;
 
 import com.github.themrpuffin.villagerenhanced.VillagerEnhanced;
-import com.github.themrpuffin.villagerenhanced.network.OpenDialoguePayload;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -11,7 +10,6 @@ import net.minecraft.world.entity.npc.villager.Villager;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
-import net.neoforged.neoforge.network.PacketDistributor;
 
 /**
  * Decides what right-clicking a villager does, and stops vanilla opening its trade screen when
@@ -105,21 +103,12 @@ public final class VillagerInteractionHandler {
         openDialogue(player, villager);
     }
 
-    /** Builds this player's view of this villager and sends it down to open the dialogue. */
+    /** Starts a conversation and sends the opening page. */
     private static void openDialogue(ServerPlayer player, Villager villager) {
         // Register before announcing: this marks the villager busy, so a second player cannot
-        // slip in between the payload being built and sent.
+        // slip in between the session opening and the payload being sent.
         DialogueSessionManager.open(player, villager);
-
-        OpenDialoguePayload payload = new OpenDialoguePayload(
-                villager.getId(),
-                villager.getDisplayName(),
-                villager.getVillagerData().profession().value().name(),
-                villager.getVillagerData().level(),
-                villager.getPlayerReputation(player),
-                DialogueBuilder.optionsFor(player, villager));
-
-        PacketDistributor.sendToPlayer(player, payload);
+        DialogueBuilder.send(player, villager, DialoguePage.GREETING);
 
         VillagerEnhanced.LOGGER.debug(
                 "Opened dialogue: player={} villager={} profession={} level={} reputation={}",

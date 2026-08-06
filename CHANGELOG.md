@@ -11,6 +11,45 @@ saved data, config or the datapack schema; **MINOR** adds features; **PATCH** fi
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-08-06
+
+Reputation you can see — and change.
+
+Villagers have always formed opinions about you. Minecraft has never shown them to you, and has
+never given you a way to influence them other than trading. Now it does both.
+
+### Added
+
+**Seeing where you stand**
+
+- New **"How do you see me?"** option showing how this villager regards you, as a named tier
+  rather than a raw number: Reviled, Disliked, Stranger, Acquaintance, Trusted, Honoured.
+- Tiers correspond to things you have actually done. Trading regularly makes you Trusted;
+  curing a zombie villager is the only route to Honoured; hurting or killing a villager will
+  drop you below Stranger — and villagers gossip, so their neighbours will hear about it.
+- Reputation decays over time, so standing is something you maintain rather than bank.
+
+**Giving gifts**
+
+- New **"Offer what you're holding"** option. Villagers accept anything they would buy in their
+  trades, plus any food — so what a villager wants varies with their profession and trade level.
+- Food is welcome from anyone, so nitwits, the unemployed and babies can be befriended too,
+  despite having nothing to trade.
+- Gifts raise their opinion of you a little, and that goodwill fades more slowly than goodwill
+  earned by trading. Gifting cannot take you all the way to Honoured, however generous you are.
+- The villager visibly reacts — you can watch it happen behind the open dialogue.
+
+### Changed
+
+- The dialogue is now **multi-page**, so conversations can go somewhere and come back.
+- What a villager says is now composed on the server rather than assembled by the client, and
+  wraps properly across lines. Groundwork for longer, more varied dialogue.
+
+### Notes
+
+- Network protocol version raised to `2`. Clients and servers must both be on 0.2.0.
+- Requires Minecraft 26.2 and NeoForge 26.2.0.48-beta, as before.
+
 ## [0.1.0] - 2026-08-05
 
 First playable release. Requires Minecraft 26.2 and NeoForge 26.2.0.48-beta.
@@ -38,5 +77,6 @@ First playable release. Requires Minecraft 26.2 and NeoForge 26.2.0.48-beta.
 - Verified on both single-player and dedicated servers, including two simultaneous players.
 - Wandering Traders are deliberately out of scope.
 
-[Unreleased]: https://github.com/TheMrPuffin/villager-enhanced/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/TheMrPuffin/villager-enhanced/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/TheMrPuffin/villager-enhanced/releases/tag/v0.2.0
 [0.1.0]: https://github.com/TheMrPuffin/villager-enhanced/releases/tag/v0.1.0

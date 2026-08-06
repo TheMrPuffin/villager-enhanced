@@ -1,10 +1,24 @@
 {
   "villagerenhanced.dialogue.greeting": "Hello, %s!",
   "villagerenhanced.dialogue.subtitle": "%s · Level %s",
+
   "villagerenhanced.dialogue.option.trade": "Trade",
+  "villagerenhanced.dialogue.option.gift": "Offer what you're holding",
+  "villagerenhanced.dialogue.option.view_reputation": "How do you see me?",
+  "villagerenhanced.dialogue.option.back": "Back",
   "villagerenhanced.dialogue.option.leave": "Leave",
 
+  "villagerenhanced.dialogue.reputation.body": "%s regards you as %s. (%s)",
+
+  "villagerenhanced.reputation.tier.reviled": "Reviled",
+  "villagerenhanced.reputation.tier.disliked": "Disliked",
+  "villagerenhanced.reputation.tier.stranger": "a Stranger",
+  "villagerenhanced.reputation.tier.acquaintance": "an Acquaintance",
+  "villagerenhanced.reputation.tier.trusted": "Trusted",
+  "villagerenhanced.reputation.tier.honoured": "Honoured",
+
   "villagerenhanced.dialogue.no_trades": "They have nothing to trade right now.",
+  "villagerenhanced.dialogue.no_gift": "They wouldn't want that. Try food, or something they buy.",
   "villagerenhanced.dialogue.busy": "They're busy talking to someone else.",
 
   "villagerenhanced.dialogue.closed.too_far": "You walked away from the conversation.",
