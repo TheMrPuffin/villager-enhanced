@@ -22,7 +22,8 @@ public final class VillagerEnhancedNetwork {
      */
     // 2: OpenDialoguePayload replaced its raw reputation int with a server-composed body
     //    Component, and DialogueOption gained VIEW_REPUTATION and BACK.
-    private static final String NETWORK_VERSION = "2";
+    // 3: that body became a list of lines, and DialogueOption gained GIFT and RUMOURS.
+    private static final String NETWORK_VERSION = "3";
 
     private VillagerEnhancedNetwork() {}
 

@@ -31,7 +31,10 @@ import net.minecraft.resources.Identifier;
  * @param villagerName   display name, resolved server-side
  * @param professionName profession display name, e.g. "Farmer"
  * @param villagerLevel  trade level, 1–5
- * @param body           what the villager is saying on this page, composed server-side
+ * @param bodyLines      what the villager is saying, composed server-side, one entry per line.
+ *                       A list rather than one Component because pages like rumours are
+ *                       naturally several separate statements, and {@code MultiLineLabel}
+ *                       renders each entry as its own line while still wrapping long ones.
  * @param options        what this villager offers here, and which options are usable
  */
 public record OpenDialoguePayload(
@@ -39,7 +42,7 @@ public record OpenDialoguePayload(
         Component villagerName,
         Component professionName,
         int villagerLevel,
-        Component body,
+        List<Component> bodyLines,
         List<DialogueOptionEntry> options) implements CustomPacketPayload {
 
     public static final CustomPacketPayload.Type<OpenDialoguePayload> TYPE =
@@ -56,7 +59,7 @@ public record OpenDialoguePayload(
                     ComponentSerialization.STREAM_CODEC, OpenDialoguePayload::villagerName,
                     ComponentSerialization.STREAM_CODEC, OpenDialoguePayload::professionName,
                     ByteBufCodecs.VAR_INT, OpenDialoguePayload::villagerLevel,
-                    ComponentSerialization.STREAM_CODEC, OpenDialoguePayload::body,
+                    ComponentSerialization.STREAM_CODEC.apply(ByteBufCodecs.list()), OpenDialoguePayload::bodyLines,
                     DialogueOptionEntry.STREAM_CODEC.apply(ByteBufCodecs.list()), OpenDialoguePayload::options,
                     OpenDialoguePayload::new);
 

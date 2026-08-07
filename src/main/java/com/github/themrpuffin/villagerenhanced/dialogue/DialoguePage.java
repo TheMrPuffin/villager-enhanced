@@ -13,5 +13,7 @@ public enum DialoguePage {
     /** The opening page: greeting, trade, ask about standing. */
     GREETING,
     /** How this villager regards the player. */
-    REPUTATION
+    REPUTATION,
+    /** What the other villagers nearby think of the player. */
+    RUMOURS
 }

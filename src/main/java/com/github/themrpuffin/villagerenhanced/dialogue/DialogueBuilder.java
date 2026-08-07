@@ -39,26 +39,27 @@ public final class DialogueBuilder {
 
         PacketDistributor.sendToPlayer(player, new OpenDialoguePayload(
                 villager.getId(),
-                villager.getDisplayName(),
+                VillagerNames.nameFor(villager),
                 villager.getVillagerData().profession().value().name(),
                 villager.getVillagerData().level(),
                 bodyFor(player, villager, page),
                 optionsFor(player, villager, page)));
     }
 
-    /** What the villager says on this page. */
-    private static Component bodyFor(ServerPlayer player, Villager villager, DialoguePage page) {
+    /** What the villager says on this page, one entry per line. */
+    private static List<Component> bodyFor(ServerPlayer player, Villager villager, DialoguePage page) {
         return switch (page) {
-            case GREETING -> Component.translatable(
-                    "villagerenhanced.dialogue.greeting", player.getDisplayName());
+            case GREETING -> List.of(Component.translatable(
+                    "villagerenhanced.dialogue.greeting", player.getDisplayName()));
             case REPUTATION -> {
                 int reputation = villager.getPlayerReputation(player);
-                yield Component.translatable(
+                yield List.of(Component.translatable(
                         "villagerenhanced.dialogue.reputation.body",
-                        villager.getDisplayName(),
+                        VillagerNames.nameFor(villager),
                         ReputationTier.fromReputation(reputation).displayName(),
-                        reputation);
+                        reputation));
             }
+            case RUMOURS -> VillagerRumours.gather(player, villager);
         };
     }
 
@@ -72,8 +73,9 @@ public final class DialogueBuilder {
                     new DialogueOptionEntry(DialogueOption.GIFT,
                             VillagerGifts.isAcceptable(villager, player.getMainHandItem())),
                     new DialogueOptionEntry(DialogueOption.VIEW_REPUTATION, true),
+                    new DialogueOptionEntry(DialogueOption.RUMOURS, true),
                     new DialogueOptionEntry(DialogueOption.LEAVE, true));
-            case REPUTATION -> List.of(
+            case REPUTATION, RUMOURS -> List.of(
                     new DialogueOptionEntry(DialogueOption.BACK, true),
                     new DialogueOptionEntry(DialogueOption.LEAVE, true));
         };

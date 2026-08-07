@@ -97,6 +97,7 @@ public final class ServerPayloadHandlers {
                 DialogueBuilder.send(player, villager, DialoguePage.GREETING);
             }
             case VIEW_REPUTATION -> DialogueBuilder.send(player, villager, DialoguePage.REPUTATION);
+            case RUMOURS -> DialogueBuilder.send(player, villager, DialoguePage.RUMOURS);
             case BACK -> DialogueBuilder.send(player, villager, DialoguePage.GREETING);
             // The client closes its own screen for Leave; the server just tidies up. Null
             // reason means "no need to tell the client" -- it already knows.

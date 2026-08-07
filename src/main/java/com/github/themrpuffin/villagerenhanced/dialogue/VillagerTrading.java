@@ -44,7 +44,10 @@ public final class VillagerTrading {
         villager.setTradingPlayer(player);
 
         // Replaces whatever screen the player had open, which is how the dialogue gives way.
-        villager.openTradingScreen(player, villager.getDisplayName(), villager.getVillagerData().level());
+        // Titled with the villager's name rather than vanilla's profession, so the trade screen
+        // reads as trading with Aldric rather than with a Farmer. The dialogue already shows the
+        // profession, and the offers make it obvious in any case.
+        villager.openTradingScreen(player, VillagerNames.nameFor(villager), villager.getVillagerData().level());
 
         VillagerEnhanced.LOGGER.debug(
                 "Opened trade screen: player={} villager={}",

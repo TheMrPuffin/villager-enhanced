@@ -100,7 +100,12 @@ public class VillagerDialogueScreen extends Screen {
     protected void init() {
         super.init();
 
-        this.body = MultiLineLabel.create(this.font, this.dialogue.body(), this.width - BODY_MARGIN * 2);
+        // The varargs form renders each Component as its own line, while still wrapping any
+        // single line that is too wide.
+        this.body = MultiLineLabel.create(
+                this.font,
+                this.width - BODY_MARGIN * 2,
+                this.dialogue.bodyLines().toArray(Component[]::new));
 
         int x = (this.width - BUTTON_WIDTH) / 2;
         // Keep the buttons below the speech however many lines it wrapped to, but never higher
@@ -132,6 +137,7 @@ public class VillagerDialogueScreen extends Screen {
             case TRADE -> Component.translatable("villagerenhanced.dialogue.option.trade");
             case GIFT -> Component.translatable("villagerenhanced.dialogue.option.gift");
             case VIEW_REPUTATION -> Component.translatable("villagerenhanced.dialogue.option.view_reputation");
+            case RUMOURS -> Component.translatable("villagerenhanced.dialogue.option.rumours");
             case BACK -> Component.translatable("villagerenhanced.dialogue.option.back");
             case LEAVE -> Component.translatable("villagerenhanced.dialogue.option.leave");
         };
@@ -141,7 +147,7 @@ public class VillagerDialogueScreen extends Screen {
         return switch (option) {
             case TRADE -> Tooltip.create(Component.translatable("villagerenhanced.dialogue.no_trades"));
             case GIFT -> Tooltip.create(Component.translatable("villagerenhanced.dialogue.no_gift"));
-            case VIEW_REPUTATION, BACK, LEAVE -> null;
+            case VIEW_REPUTATION, RUMOURS, BACK, LEAVE -> null;
         };
     }
 

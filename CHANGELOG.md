@@ -11,6 +11,47 @@ saved data, config or the datapack schema; **MINOR** adds features; **PATCH** fi
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-08-06
+
+Villagers have names, and they talk about you behind your back.
+
+Minecraft villagers have always gossiped. Each one forms its own opinion of you, and they pass
+those opinions around when they meet. You have never been able to see any of it. Now you can ask.
+
+### Added
+
+**Names**
+
+- Every villager has a name. Names are distinct within a village, so you can tell one farmer
+  from another.
+- Villages in different biomes draw on different names, so a desert settlement sounds unlike a
+  taiga one.
+- Names are remembered. They survive world reloads, and a villager who is zombified and later
+  cured comes back as the person you knew.
+- Name a villager with a name tag and that name wins, as you would expect.
+- The trade screen is now titled with the villager's name rather than their job.
+
+**Rumours**
+
+- New **"What do the others say about me?"** option. The villager tells you what nearby
+  villagers think of you, naming them so you know who to thank — or who to apologise to.
+- Up to four opinions, strongest first. Someone who resents you surfaces just as readily as
+  someone who admires you.
+- The interesting part: villagers you have **never met** can still have an opinion, because
+  they heard it from someone who has. Trade fairly with one farmer and word gets round. Hurt
+  someone and word gets round just as fast.
+
+### Changed
+
+- Villagers now carry saved data of their own. Existing worlds are fine — villagers are named
+  the first time you meet them, with nothing to convert.
+- Dialogue can show several lines of speech, which is what makes rumours readable.
+
+### Notes
+
+- Network protocol version raised to `3`. Clients and servers must both be on 0.3.0.
+- Requires Minecraft 26.2 and NeoForge 26.2.0.48-beta, as before.
+
 ## [0.2.0] - 2026-08-06
 
 Reputation you can see — and change.
@@ -77,6 +118,7 @@ First playable release. Requires Minecraft 26.2 and NeoForge 26.2.0.48-beta.
 - Verified on both single-player and dedicated servers, including two simultaneous players.
 - Wandering Traders are deliberately out of scope.
 
-[Unreleased]: https://github.com/TheMrPuffin/villager-enhanced/compare/v0.2.0...HEAD
+[Unreleased]: https://github.com/TheMrPuffin/villager-enhanced/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/TheMrPuffin/villager-enhanced/releases/tag/v0.3.0
 [0.2.0]: https://github.com/TheMrPuffin/villager-enhanced/releases/tag/v0.2.0
 [0.1.0]: https://github.com/TheMrPuffin/villager-enhanced/releases/tag/v0.1.0

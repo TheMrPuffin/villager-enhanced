@@ -20,7 +20,9 @@ public enum DialogueOption {
     /** Return to the greeting page. */
     BACK,
     /** Give the villager whatever is in your main hand. */
-    GIFT;
+    GIFT,
+    /** Ask what the other villagers nearby think of you. */
+    RUMOURS;
 
     /** {@code values()} allocates a new array per call, and this is read for every packet. */
     private static final DialogueOption[] VALUES = values();

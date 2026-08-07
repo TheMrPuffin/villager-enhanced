@@ -5,10 +5,19 @@
   "villagerenhanced.dialogue.option.trade": "Trade",
   "villagerenhanced.dialogue.option.gift": "Offer what you're holding",
   "villagerenhanced.dialogue.option.view_reputation": "How do you see me?",
+  "villagerenhanced.dialogue.option.rumours": "What do the others say about me?",
   "villagerenhanced.dialogue.option.back": "Back",
   "villagerenhanced.dialogue.option.leave": "Leave",
 
   "villagerenhanced.dialogue.reputation.body": "%s regards you as %s. (%s)",
+
+  "villagerenhanced.dialogue.rumours.subject": "%s the %s",
+  "villagerenhanced.dialogue.rumours.none": "Nobody around here has much to say about you yet.",
+  "villagerenhanced.dialogue.rumours.honoured": "%s speaks of you with real warmth.",
+  "villagerenhanced.dialogue.rumours.trusted": "%s speaks well of you.",
+  "villagerenhanced.dialogue.rumours.acquaintance": "%s says you've dealt fairly with them.",
+  "villagerenhanced.dialogue.rumours.disliked": "%s has been complaining about you.",
+  "villagerenhanced.dialogue.rumours.reviled": "%s says you're not to be trusted.",
 
   "villagerenhanced.reputation.tier.reviled": "Reviled",
   "villagerenhanced.reputation.tier.disliked": "Disliked",
