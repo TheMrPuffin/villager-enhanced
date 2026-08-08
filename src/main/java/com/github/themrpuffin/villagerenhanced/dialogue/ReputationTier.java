@@ -65,6 +65,19 @@ public enum ReputationTier {
         return REVILED;
     }
 
+    /**
+     * Is this standing at least as good as the given one?
+     *
+     * <p>Relies on the tiers being declared worst to best, which {@link #fromReputation} already
+     * requires.
+     *
+     * <p>Used to decide what a villager is willing to do for a player. From 0.5.0 this becomes a
+     * declared minimum on each {@code DialogueOption} rather than scattered checks.
+     */
+    public boolean isAtLeast(ReputationTier other) {
+        return this.ordinal() >= other.ordinal();
+    }
+
     /** Display name, e.g. "Trusted". */
     public Component displayName() {
         return Component.translatable("villagerenhanced.reputation.tier." + name().toLowerCase());

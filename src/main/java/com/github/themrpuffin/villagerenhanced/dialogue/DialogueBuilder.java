@@ -1,5 +1,6 @@
 package com.github.themrpuffin.villagerenhanced.dialogue;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.github.themrpuffin.villagerenhanced.network.OpenDialoguePayload;
@@ -39,7 +40,7 @@ public final class DialogueBuilder {
 
         PacketDistributor.sendToPlayer(player, new OpenDialoguePayload(
                 villager.getId(),
-                VillagerNames.nameFor(villager),
+                VillagerNames.displayNameFor(villager, player),
                 villager.getVillagerData().profession().value().name(),
                 villager.getVillagerData().level(),
                 bodyFor(player, villager, page),
@@ -49,13 +50,12 @@ public final class DialogueBuilder {
     /** What the villager says on this page, one entry per line. */
     private static List<Component> bodyFor(ServerPlayer player, Villager villager, DialoguePage page) {
         return switch (page) {
-            case GREETING -> List.of(Component.translatable(
-                    "villagerenhanced.dialogue.greeting", player.getDisplayName()));
+            case GREETING -> List.of(greetingFor(player, villager));
             case REPUTATION -> {
                 int reputation = villager.getPlayerReputation(player);
                 yield List.of(Component.translatable(
                         "villagerenhanced.dialogue.reputation.body",
-                        VillagerNames.nameFor(villager),
+                        VillagerNames.displayNameFor(villager, player),
                         ReputationTier.fromReputation(reputation).displayName(),
                         reputation));
             }
@@ -63,22 +63,73 @@ public final class DialogueBuilder {
         };
     }
 
+    /**
+     * How the villager opens, which depends on whether they know the player.
+     *
+     * <p>Someone who has never introduced themselves is guarded; someone who has been away a
+     * long while says so. The gap is measured from the last conversation, which is why
+     * {@code noteConversation} runs after the greeting is composed, not before.
+     */
+    private static Component greetingFor(ServerPlayer player, Villager villager) {
+        if (!VillagerMemory.isIntroduced(villager, player)) {
+            return Component.translatable("villagerenhanced.dialogue.greeting.stranger");
+        }
+        if (VillagerMemory.isLongAbsence(villager, player)) {
+            return Component.translatable(
+                    "villagerenhanced.dialogue.greeting.absent", player.getDisplayName());
+        }
+        return Component.translatable("villagerenhanced.dialogue.greeting", player.getDisplayName());
+    }
+
     /** The options this villager offers on this page, in display order. */
     public static List<DialogueOptionEntry> optionsFor(
             ServerPlayer player, Villager villager, DialoguePage page) {
         return switch (page) {
-            case GREETING -> List.of(
-                    // Nitwits, the unemployed and babies have no offers.
-                    new DialogueOptionEntry(DialogueOption.TRADE, !villager.getOffers().isEmpty()),
-                    new DialogueOptionEntry(DialogueOption.GIFT,
-                            VillagerGifts.isAcceptable(villager, player.getMainHandItem())),
-                    new DialogueOptionEntry(DialogueOption.VIEW_REPUTATION, true),
-                    new DialogueOptionEntry(DialogueOption.RUMOURS, true),
-                    new DialogueOptionEntry(DialogueOption.LEAVE, true));
+            case GREETING -> greetingOptions(player, villager);
             case REPUTATION, RUMOURS -> List.of(
                     new DialogueOptionEntry(DialogueOption.BACK, true),
                     new DialogueOptionEntry(DialogueOption.LEAVE, true));
         };
+    }
+
+    /**
+     * The greeting page's options, and what standing each requires.
+     *
+     * <p>What a villager will do for you rises with how they feel about you. Two things are
+     * deliberately never gated: <b>gifts</b>, because they are the way back from a bad
+     * reputation and locking them would strand a player who made one mistake; and <b>"how do
+     * you see me?"</b>, because someone telling you exactly how little they think of you is
+     * both in character and the feedback that makes the whole system legible.
+     *
+     * <p>Unavailable options are greyed out rather than hidden, so they advertise what is
+     * possible and what it would take, instead of being doors a player never notices.
+     */
+    private static List<DialogueOptionEntry> greetingOptions(ServerPlayer player, Villager villager) {
+        ReputationTier standing = ReputationTier.fromReputation(villager.getPlayerReputation(player));
+        List<DialogueOptionEntry> options = new ArrayList<>();
+
+        // Asking someone's name stops being a sensible thing to say once you know it, so the
+        // option disappears rather than sitting there greyed out forever. Refused by anyone who
+        // actively dislikes the player -- but freely given by an ordinary stranger, so naming is
+        // not hidden behind grinding reputation first.
+        if (!VillagerMemory.isIntroduced(villager, player)) {
+            options.add(new DialogueOptionEntry(
+                    DialogueOption.ASK_NAME, standing.isAtLeast(ReputationTier.STRANGER)));
+        }
+
+        // Nitwits, the unemployed and babies have no offers.
+        options.add(new DialogueOptionEntry(DialogueOption.TRADE, !villager.getOffers().isEmpty()));
+        options.add(new DialogueOptionEntry(DialogueOption.GIFT,
+                VillagerGifts.isAcceptable(villager, player.getMainHandItem())));
+        options.add(new DialogueOptionEntry(DialogueOption.VIEW_REPUTATION, true));
+
+        // Confiding in someone about the neighbours is something you do for people you like.
+        options.add(new DialogueOptionEntry(
+                DialogueOption.RUMOURS, standing.isAtLeast(ReputationTier.ACQUAINTANCE)));
+
+        options.add(new DialogueOptionEntry(DialogueOption.LEAVE, true));
+
+        return List.copyOf(options);
     }
 
     /**

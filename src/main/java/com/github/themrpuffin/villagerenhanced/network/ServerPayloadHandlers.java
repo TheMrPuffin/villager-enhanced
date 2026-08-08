@@ -5,6 +5,7 @@ import com.github.themrpuffin.villagerenhanced.dialogue.DialogueBuilder;
 import com.github.themrpuffin.villagerenhanced.dialogue.DialoguePage;
 import com.github.themrpuffin.villagerenhanced.dialogue.DialogueSessionManager;
 import com.github.themrpuffin.villagerenhanced.dialogue.VillagerGifts;
+import com.github.themrpuffin.villagerenhanced.dialogue.VillagerMemory;
 import com.github.themrpuffin.villagerenhanced.dialogue.VillagerTrading;
 
 import net.minecraft.server.level.ServerPlayer;
@@ -94,6 +95,12 @@ public final class ServerPayloadHandlers {
                 VillagerGifts.give(player, villager);
                 // Resend either way: on success the Gift option may now be disabled because the
                 // last of the stack was handed over, and on failure the page corrects itself.
+                DialogueBuilder.send(player, villager, DialoguePage.GREETING);
+            }
+            case ASK_NAME -> {
+                // Resending the greeting is the payoff: the title changes from "Farmer" to
+                // their name, and the greeting warms up, in one visible step.
+                VillagerMemory.introduce(villager, player);
                 DialogueBuilder.send(player, villager, DialoguePage.GREETING);
             }
             case VIEW_REPUTATION -> DialogueBuilder.send(player, villager, DialoguePage.REPUTATION);

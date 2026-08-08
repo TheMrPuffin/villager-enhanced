@@ -1,7 +1,10 @@
 {
   "villagerenhanced.dialogue.greeting": "Hello, %s!",
+  "villagerenhanced.dialogue.greeting.stranger": "Yes? Something you needed?",
+  "villagerenhanced.dialogue.greeting.absent": "It's been a while, %s.",
   "villagerenhanced.dialogue.subtitle": "%s · Level %s",
 
+  "villagerenhanced.dialogue.option.ask_name": "What should I call you?",
   "villagerenhanced.dialogue.option.trade": "Trade",
   "villagerenhanced.dialogue.option.gift": "Offer what you're holding",
   "villagerenhanced.dialogue.option.view_reputation": "How do you see me?",
@@ -28,6 +31,8 @@
 
   "villagerenhanced.dialogue.no_trades": "They have nothing to trade right now.",
   "villagerenhanced.dialogue.no_gift": "They wouldn't want that. Try food, or something they buy.",
+  "villagerenhanced.dialogue.no_name": "They don't care to introduce themselves to you.",
+  "villagerenhanced.dialogue.no_rumours": "They don't know you well enough to talk about the neighbours. Trade with them a few times.",
   "villagerenhanced.dialogue.busy": "They're busy talking to someone else.",
 
   "villagerenhanced.dialogue.closed.too_far": "You walked away from the conversation.",

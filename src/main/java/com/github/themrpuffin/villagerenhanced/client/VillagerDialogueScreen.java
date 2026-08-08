@@ -138,6 +138,7 @@ public class VillagerDialogueScreen extends Screen {
             case GIFT -> Component.translatable("villagerenhanced.dialogue.option.gift");
             case VIEW_REPUTATION -> Component.translatable("villagerenhanced.dialogue.option.view_reputation");
             case RUMOURS -> Component.translatable("villagerenhanced.dialogue.option.rumours");
+            case ASK_NAME -> Component.translatable("villagerenhanced.dialogue.option.ask_name");
             case BACK -> Component.translatable("villagerenhanced.dialogue.option.back");
             case LEAVE -> Component.translatable("villagerenhanced.dialogue.option.leave");
         };
@@ -147,7 +148,9 @@ public class VillagerDialogueScreen extends Screen {
         return switch (option) {
             case TRADE -> Tooltip.create(Component.translatable("villagerenhanced.dialogue.no_trades"));
             case GIFT -> Tooltip.create(Component.translatable("villagerenhanced.dialogue.no_gift"));
-            case VIEW_REPUTATION, RUMOURS, BACK, LEAVE -> null;
+            case ASK_NAME -> Tooltip.create(Component.translatable("villagerenhanced.dialogue.no_name"));
+            case RUMOURS -> Tooltip.create(Component.translatable("villagerenhanced.dialogue.no_rumours"));
+            case VIEW_REPUTATION, BACK, LEAVE -> null;
         };
     }
 

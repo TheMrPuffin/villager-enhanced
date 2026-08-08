@@ -1,10 +1,14 @@
 package com.github.themrpuffin.villagerenhanced.attachment;
 
+import java.util.Map;
+import java.util.UUID;
 import java.util.function.Supplier;
 
 import com.github.themrpuffin.villagerenhanced.VillagerEnhanced;
+import com.github.themrpuffin.villagerenhanced.dialogue.PlayerRelationship;
 import com.mojang.serialization.Codec;
 
+import net.minecraft.core.UUIDUtil;
 import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
@@ -41,6 +45,25 @@ public final class VillagerEnhancedAttachments {
             () -> AttachmentType.<String>builder(() -> "")
                     .serialize(Codec.STRING.fieldOf("name"))
                     .build());
+
+    /**
+     * What this villager remembers about each player who has spoken to it.
+     *
+     * <p>Keyed by player UUID. Absent entries mean "never met", so the map only grows for
+     * players who have actually held a conversation — a villager nobody has talked to stores
+     * nothing.
+     *
+     * <p>Kept deliberately small, because this rides along with every villager in the world. If
+     * it ever needs to hold much more per player, consider pruning entries for players who have
+     * not been seen in a long time.
+     */
+    public static final Supplier<AttachmentType<Map<UUID, PlayerRelationship>>> VILLAGER_RELATIONSHIPS =
+            ATTACHMENT_TYPES.register(
+                    "villager_relationships",
+                    () -> AttachmentType.<Map<UUID, PlayerRelationship>>builder(Map::of)
+                            .serialize(Codec.unboundedMap(UUIDUtil.STRING_CODEC, PlayerRelationship.CODEC)
+                                    .fieldOf("relationships"))
+                            .build());
 
     private VillagerEnhancedAttachments() {}
 }

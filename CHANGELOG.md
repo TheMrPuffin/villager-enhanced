@@ -11,6 +11,45 @@ saved data, config or the datapack schema; **MINOR** adds features; **PATCH** fi
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-08-06
+
+Villagers remember you — and decide how much to tell you.
+
+Names are no longer handed out with the window. A villager you have never spoken to is just
+"the Farmer" until you ask, and whether they answer depends on what they make of you.
+
+### Added
+
+**Introductions**
+
+- Villagers are shown by their trade until they give you their name. Ask, and the window
+  changes in front of you.
+- A villager who resents you will not introduce themselves. An ordinary stranger will, so
+  nothing about names is locked behind grinding reputation.
+- Name a villager with a name tag and you skip all of this, as you would expect.
+
+**Memory**
+
+- Villagers remember who they have spoken to, and it survives world reloads and server
+  restarts.
+- Greetings reflect that: guarded from someone who has not introduced themselves, warmer once
+  they know you, and a remark on the gap if you have been away a few days.
+
+**Willingness**
+
+- What a villager will do for you now depends on how they feel about you. Gossip about the
+  neighbours is something they share with people they like, not with strangers — trade with
+  them a few times first.
+- Two things are always available, whatever they think of you: you can always offer a gift, so
+  there is a way back from a bad reputation, and you can always ask how they see you, so you
+  are never left guessing.
+- Options you cannot use yet are shown greyed with an explanation, rather than hidden.
+
+### Notes
+
+- Network protocol version raised to `4`. Clients and servers must both be on 0.4.0.
+- Requires Minecraft 26.2 and NeoForge 26.2.0.48-beta, as before.
+
 ## [0.3.0] - 2026-08-06
 
 Villagers have names, and they talk about you behind your back.
@@ -118,7 +157,8 @@ First playable release. Requires Minecraft 26.2 and NeoForge 26.2.0.48-beta.
 - Verified on both single-player and dedicated servers, including two simultaneous players.
 - Wandering Traders are deliberately out of scope.
 
-[Unreleased]: https://github.com/TheMrPuffin/villager-enhanced/compare/v0.3.0...HEAD
+[Unreleased]: https://github.com/TheMrPuffin/villager-enhanced/compare/v0.4.0...HEAD
+[0.4.0]: https://github.com/TheMrPuffin/villager-enhanced/releases/tag/v0.4.0
 [0.3.0]: https://github.com/TheMrPuffin/villager-enhanced/releases/tag/v0.3.0
 [0.2.0]: https://github.com/TheMrPuffin/villager-enhanced/releases/tag/v0.2.0
 [0.1.0]: https://github.com/TheMrPuffin/villager-enhanced/releases/tag/v0.1.0

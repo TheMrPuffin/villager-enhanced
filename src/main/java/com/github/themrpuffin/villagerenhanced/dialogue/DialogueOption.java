@@ -22,7 +22,9 @@ public enum DialogueOption {
     /** Give the villager whatever is in your main hand. */
     GIFT,
     /** Ask what the other villagers nearby think of you. */
-    RUMOURS;
+    RUMOURS,
+    /** Ask the villager their name, so they stop being "the Farmer". */
+    ASK_NAME;
 
     /** {@code values()} allocates a new array per call, and this is read for every packet. */
     private static final DialogueOption[] VALUES = values();

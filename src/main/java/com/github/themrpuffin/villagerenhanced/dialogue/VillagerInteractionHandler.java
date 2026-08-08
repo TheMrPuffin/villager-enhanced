@@ -110,6 +110,10 @@ public final class VillagerInteractionHandler {
         DialogueSessionManager.open(player, villager);
         DialogueBuilder.send(player, villager, DialoguePage.GREETING);
 
+        // After sending, because the greeting depends on how long it had been since the last
+        // conversation. Noting it first would mean nobody was ever greeted as long-absent.
+        VillagerMemory.noteConversation(villager, player);
+
         VillagerEnhanced.LOGGER.debug(
                 "Opened dialogue: player={} villager={} profession={} level={} reputation={}",
                 player.getName().getString(),

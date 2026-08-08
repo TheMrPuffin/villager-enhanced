@@ -13,6 +13,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.npc.villager.Villager;
 import net.minecraft.world.entity.npc.villager.VillagerType;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -143,6 +144,23 @@ public final class VillagerNames {
         String assigned = assign(villager);
         villager.setData(VillagerEnhancedAttachments.VILLAGER_NAME, assigned);
         return Component.literal(assigned);
+    }
+
+    /**
+     * What this player should see this villager called.
+     *
+     * <p>A villager who has not introduced themselves is shown by their trade — "Farmer" — not
+     * by name. Learning someone's name is something that happens in conversation, so it should
+     * cost a question rather than arriving free with the window.
+     *
+     * <p>A player-applied name tag bypasses this: if you named them yourself, you already know
+     * what they are called.
+     */
+    public static Component displayNameFor(Villager villager, Player player) {
+        if (villager.getCustomName() != null || VillagerMemory.isIntroduced(villager, player)) {
+            return nameFor(villager);
+        }
+        return villager.getDisplayName();
     }
 
     /**
