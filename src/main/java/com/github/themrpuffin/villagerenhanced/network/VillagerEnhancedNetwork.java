@@ -26,7 +26,10 @@ public final class VillagerEnhancedNetwork {
     // 4: DialogueOption gained ASK_NAME.
     // 5: DialogueOption gained ASK_ABOUT_WORK and SHOW_BELONGINGS.
     // 6: DialogueOption gained TOPICS; questions moved behind an "Ask about..." branch.
-    private static final String NETWORK_VERSION = "6";
+    // 7: added VillagerNotificationPayload. The payload set is part of the protocol, not just
+    //    the shape of individual payloads -- a client that has never registered a type cannot
+    //    receive it.
+    private static final String NETWORK_VERSION = "7";
 
     private VillagerEnhancedNetwork() {}
 
@@ -58,5 +61,9 @@ public final class VillagerEnhancedNetwork {
         registrar.playToClient(
                 DialogueClosedPayload.TYPE,
                 DialogueClosedPayload.STREAM_CODEC);
+
+        registrar.playToClient(
+                VillagerNotificationPayload.TYPE,
+                VillagerNotificationPayload.STREAM_CODEC);
     }
 }

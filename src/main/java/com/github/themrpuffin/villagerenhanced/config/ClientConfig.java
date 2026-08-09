@@ -19,6 +19,9 @@ public final class ClientConfig {
     /** Ticks between lines appearing. 0 shows the whole answer at once. */
     public static final ModConfigSpec.IntValue REVEAL_TICKS_PER_LINE;
 
+    /** Whether to show messages about villagers being born or killed nearby. */
+    public static final ModConfigSpec.BooleanValue SHOW_NOTIFICATIONS;
+
     static {
         ModConfigSpec.Builder builder = new ModConfigSpec.Builder();
 
@@ -39,6 +42,14 @@ public final class ClientConfig {
                         "once rather than once per line; use voiceVolume to silence them.")
                 .translation("villagerenhanced.config.reveal_ticks_per_line")
                 .defineInRange("revealTicksPerLine", 5, 0, 20);
+
+        SHOW_NOTIFICATIONS = builder
+                .comment(
+                        "Whether to show messages when a villager nearby is born or killed.",
+                        "The world decides whether these are sent at all, and how far they carry;",
+                        "this is your own switch for whether to see them.")
+                .translation("villagerenhanced.config.show_notifications")
+                .define("showNotifications", true);
 
         builder.pop();
         SPEC = builder.build();

@@ -1,8 +1,10 @@
 package com.github.themrpuffin.villagerenhanced.client;
 
 import com.github.themrpuffin.villagerenhanced.VillagerEnhanced;
+import com.github.themrpuffin.villagerenhanced.config.ClientConfig;
 import com.github.themrpuffin.villagerenhanced.network.DialogueClosedPayload;
 import com.github.themrpuffin.villagerenhanced.network.OpenDialoguePayload;
+import com.github.themrpuffin.villagerenhanced.network.VillagerNotificationPayload;
 
 import net.minecraft.client.Minecraft;
 import net.neoforged.api.distmarker.Dist;
@@ -29,6 +31,27 @@ public final class ClientPayloadHandlers {
     public static void onRegisterClientPayloadHandlers(RegisterClientPayloadHandlersEvent event) {
         event.register(OpenDialoguePayload.TYPE, ClientPayloadHandlers::handleOpenDialogue);
         event.register(DialogueClosedPayload.TYPE, ClientPayloadHandlers::handleDialogueClosed);
+        event.register(VillagerNotificationPayload.TYPE, ClientPayloadHandlers::handleNotification);
+    }
+
+    /**
+     * Something happened to a villager nearby.
+     *
+     * <p>Shown in chat rather than the action bar: these arrive unprompted and are worth being
+     * able to scroll back to, where an action-bar line vanishes in seconds.
+     *
+     * <p>This is the point of sending a payload rather than a chat message from the server —
+     * the player gets to decide whether they want these at all.
+     */
+    private static void handleNotification(VillagerNotificationPayload payload, IPayloadContext context) {
+        if (!ClientConfig.SHOW_NOTIFICATIONS.get()) {
+            return;
+        }
+
+        Minecraft minecraft = Minecraft.getInstance();
+        if (minecraft.player != null) {
+            minecraft.player.sendSystemMessage(payload.message());
+        }
     }
 
     /**

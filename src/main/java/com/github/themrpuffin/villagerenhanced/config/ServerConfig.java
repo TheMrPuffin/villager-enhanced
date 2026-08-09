@@ -42,6 +42,15 @@ public final class ServerConfig {
     /** Whether the reputation page shows the raw gossip score beside the tier. */
     public static final ModConfigSpec.BooleanValue SHOW_RAW_REPUTATION;
 
+    /** Whether nearby players are told when a villager is killed. */
+    public static final ModConfigSpec.BooleanValue NOTIFY_VILLAGER_DEATHS;
+
+    /** Whether nearby players are told when a villager is born. */
+    public static final ModConfigSpec.BooleanValue NOTIFY_VILLAGER_BIRTHS;
+
+    /** How close a player must be to be told, in blocks. */
+    public static final ModConfigSpec.IntValue NOTIFICATION_RADIUS;
+
     static {
         ModConfigSpec.Builder builder = new ModConfigSpec.Builder();
 
@@ -106,6 +115,29 @@ public final class ServerConfig {
                         "written on the server: how much detail a villager gives away is content.")
                 .translation("villagerenhanced.config.show_raw_reputation")
                 .define("showRawReputation", true);
+
+        builder.pop();
+
+        builder.comment("Telling players when something happens to a villager nearby.")
+                .push("notifications");
+
+        NOTIFY_VILLAGER_DEATHS = builder
+                .comment("Whether nearby players are told when a villager is killed.")
+                .translation("villagerenhanced.config.notify_deaths")
+                .define("notifyVillagerDeaths", true);
+
+        NOTIFY_VILLAGER_BIRTHS = builder
+                .comment("Whether nearby players are told when a villager is born.")
+                .translation("villagerenhanced.config.notify_births")
+                .define("notifyVillagerBirths", true);
+
+        NOTIFICATION_RADIUS = builder
+                .comment(
+                        "How close a player must be to hear about it, in blocks.",
+                        "Generous by default, since the point is hearing about a raid you are not",
+                        "standing in. A busy server with many villages will want this smaller.")
+                .translation("villagerenhanced.config.notification_radius")
+                .defineInRange("notificationRadius", 128, 16, 512);
 
         builder.pop();
         SPEC = builder.build();

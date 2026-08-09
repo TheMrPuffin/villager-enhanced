@@ -42,6 +42,11 @@
 
   "villagerenhanced.narration.unavailable": "%s — unavailable. %s",
 
+  "villagerenhanced.notification.subject": "%s the %s",
+  "villagerenhanced.notification.killed": "%s was killed by %s.",
+  "villagerenhanced.notification.died": "%s has died.",
+  "villagerenhanced.notification.born": "A child was born to %s and %s.",
+
   "villagerenhanced.configuration.title": "Villager Enhanced",
   "villagerenhanced.configuration.section.presentation": "Presentation",
   "villagerenhanced.configuration.section.presentation.title": "How the dialogue looks and sounds",
@@ -60,6 +65,12 @@
   "villagerenhanced.config.rumour_count": "Rumours shown at once",
   "villagerenhanced.config.rumour_radius": "Rumour radius (blocks)",
   "villagerenhanced.config.show_raw_reputation": "Show raw reputation score",
+  "villagerenhanced.config.show_notifications": "Show villager notifications",
+  "villagerenhanced.config.notify_deaths": "Announce villager deaths",
+  "villagerenhanced.config.notify_births": "Announce villager births",
+  "villagerenhanced.config.notification_radius": "Notification radius (blocks)",
+  "villagerenhanced.configuration.section.notifications": "Notifications",
+  "villagerenhanced.configuration.section.notifications.title": "Telling players what happened",
 
   "villagerenhanced.dialogue.work.none": "Nothing, at the moment. I've not found my trade yet.",
   "villagerenhanced.dialogue.work.nitwit": "Me? Oh, I keep busy. Very busy. Mostly with the standing.",

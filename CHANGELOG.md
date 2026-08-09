@@ -11,6 +11,37 @@ saved data, config or the datapack schema; **MINOR** adds features; **PATCH** fi
 
 ## [Unreleased]
 
+## [0.8.0] - 2026-08-09
+
+Find out what happened while you were away.
+
+Losing a villager to a zombie while you are off mining is the sort of thing worth hearing about
+at the time, rather than days later when you notice the beds are empty.
+
+### Added
+
+**Villager notifications**
+
+- You are told when a villager near you is **killed**, and by what. "Mira the Librarian was
+  killed by a Zombie" means something rather different from "Mira the Librarian has died", and
+  the difference is usually the one you needed to know.
+- You are told when a villager near you is **born**, named after the parents.
+- Villagers you have not been introduced to are described by their trade, just as they are
+  everywhere else. Two players standing together may see the same event worded differently,
+  depending on who they have met.
+- Messages go to chat, so you can scroll back to something you missed.
+
+**Two switches, because the two questions are different**
+
+- Whoever runs the world decides whether these are announced at all, and how far they carry
+  (128 blocks by default).
+- You decide whether you want to see them, regardless of what anyone else prefers.
+
+### Notes
+
+- Network protocol version raised to `7`. Clients and servers must both be on 0.8.0.
+- Requires Minecraft 26.2 and NeoForge 26.2.0.48-beta, as before.
+
 ## [0.7.0] - 2026-08-09
 
 Settings, so you can have it your way.
@@ -275,7 +306,8 @@ First playable release. Requires Minecraft 26.2 and NeoForge 26.2.0.48-beta.
 - Verified on both single-player and dedicated servers, including two simultaneous players.
 - Wandering Traders are deliberately out of scope.
 
-[Unreleased]: https://github.com/TheMrPuffin/villager-enhanced/compare/v0.7.0...HEAD
+[Unreleased]: https://github.com/TheMrPuffin/villager-enhanced/compare/v0.8.0...HEAD
+[0.8.0]: https://github.com/TheMrPuffin/villager-enhanced/releases/tag/v0.8.0
 [0.7.0]: https://github.com/TheMrPuffin/villager-enhanced/releases/tag/v0.7.0
 [0.6.0]: https://github.com/TheMrPuffin/villager-enhanced/releases/tag/v0.6.0
 [0.5.0]: https://github.com/TheMrPuffin/villager-enhanced/releases/tag/v0.5.0
