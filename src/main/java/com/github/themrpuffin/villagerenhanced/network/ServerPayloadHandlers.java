@@ -103,11 +103,14 @@ public final class ServerPayloadHandlers {
                 VillagerMemory.introduce(villager, player);
                 DialogueBuilder.send(player, villager, DialoguePage.GREETING);
             }
+            case TOPICS -> DialogueBuilder.send(player, villager, DialoguePage.TOPICS);
             case VIEW_REPUTATION -> DialogueBuilder.send(player, villager, DialoguePage.REPUTATION);
             case RUMOURS -> DialogueBuilder.send(player, villager, DialoguePage.RUMOURS);
             case ASK_ABOUT_WORK -> DialogueBuilder.send(player, villager, DialoguePage.WORK);
             case SHOW_BELONGINGS -> DialogueBuilder.send(player, villager, DialoguePage.BELONGINGS);
-            case BACK -> DialogueBuilder.send(player, villager, DialoguePage.GREETING);
+            // Back climbs one level rather than jumping to the greeting, so a question returns
+            // to the list it was asked from.
+            case BACK -> DialogueBuilder.send(player, villager, page.parent());
             // The client closes its own screen for Leave; the server just tidies up. Null
             // reason means "no need to tell the client" -- it already knows.
             case LEAVE -> DialogueSessionManager.close(player, null);

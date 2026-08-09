@@ -59,6 +59,7 @@ public final class DialogueBuilder {
                         ReputationTier.fromReputation(reputation).displayName(),
                         reputation));
             }
+            case TOPICS -> List.of(Component.translatable("villagerenhanced.dialogue.topics.body"));
             case RUMOURS -> VillagerRumours.gather(player, villager);
             case WORK -> VillagerWork.describe(villager);
             case BELONGINGS -> VillagerBelongings.describe(villager);
@@ -88,10 +89,29 @@ public final class DialogueBuilder {
             ServerPlayer player, Villager villager, DialoguePage page) {
         return switch (page) {
             case GREETING -> greetingOptions(player, villager);
+            case TOPICS -> topicOptions(player, villager);
             case REPUTATION, RUMOURS, WORK, BELONGINGS -> List.of(
                     new DialogueOptionEntry(DialogueOption.BACK, true),
                     new DialogueOptionEntry(DialogueOption.LEAVE, true));
         };
+    }
+
+    /**
+     * The questions branch.
+     *
+     * <p>These four used to sit on the greeting, which pushed it to eight buttons. They are the
+     * things you <i>ask</i> rather than <i>do</i>, so they group naturally — and it keeps the
+     * greeting to the actions worth reaching in one click.
+     */
+    private static List<DialogueOptionEntry> topicOptions(ServerPlayer player, Villager villager) {
+        ReputationTier standing = ReputationTier.fromReputation(villager.getPlayerReputation(player));
+
+        return List.of(
+                entry(DialogueOption.ASK_ABOUT_WORK, standing, true),
+                entry(DialogueOption.VIEW_REPUTATION, standing, true),
+                entry(DialogueOption.RUMOURS, standing, true),
+                entry(DialogueOption.SHOW_BELONGINGS, standing, true),
+                entry(DialogueOption.BACK, standing, true));
     }
 
     /**
@@ -120,10 +140,9 @@ public final class DialogueBuilder {
         options.add(entry(DialogueOption.TRADE, standing, !villager.getOffers().isEmpty()));
         options.add(entry(DialogueOption.GIFT, standing,
                 VillagerGifts.isAcceptable(villager, player.getMainHandItem())));
-        options.add(entry(DialogueOption.ASK_ABOUT_WORK, standing, true));
-        options.add(entry(DialogueOption.VIEW_REPUTATION, standing, true));
-        options.add(entry(DialogueOption.RUMOURS, standing, true));
-        options.add(entry(DialogueOption.SHOW_BELONGINGS, standing, true));
+        // Everything you ask rather than do lives behind this, which keeps the greeting to the
+        // handful of actions worth reaching in a single click.
+        options.add(entry(DialogueOption.TOPICS, standing, true));
         options.add(entry(DialogueOption.LEAVE, standing, true));
 
         return List.copyOf(options);

@@ -1,17 +1,18 @@
 package com.github.themrpuffin.villagerenhanced.dialogue;
 
 /**
- * Which part of a conversation the player is currently looking at.
+ * Which part of a conversation a player is looking at.
  *
- * <p>Tracked server-side in the {@link DialogueSession}, because the options a villager offers
- * depend on it — "Back" only exists on the reputation page, "Trade" only on the greeting. The
- * server cannot validate a returning choice without knowing which page produced it.
+ * <p>Stored in the {@link DialogueSession}, because the options a villager offers depend on it
+ * and the server cannot work out from the world alone which page somebody navigated to.
  *
- * <p>M7 replaces this enum with data-driven nodes loaded from a datapack.
+ * <p>Hardcoded for now; 1.0 replaces these with data-driven dialogue nodes.
  */
 public enum DialoguePage {
-    /** The opening page: greeting, trade, ask about standing. */
+    /** The opening page: what a villager says when you first speak to them. */
     GREETING,
+    /** The list of things you can ask about, which keeps the greeting from filling with them. */
+    TOPICS,
     /** How this villager regards the player. */
     REPUTATION,
     /** What the other villagers nearby think of the player. */
@@ -19,5 +20,20 @@ public enum DialoguePage {
     /** What this villager does for a living. */
     WORK,
     /** What this villager is carrying. */
-    BELONGINGS
+    BELONGINGS;
+
+    /**
+     * Where "Back" leads from here.
+     *
+     * <p>Written as a switch rather than a constructor field because an enum constant cannot be
+     * referenced from another constant's constructor arguments.
+     */
+    public DialoguePage parent() {
+        return switch (this) {
+            // Already the root; Back is never offered here.
+            case GREETING -> GREETING;
+            case TOPICS -> GREETING;
+            case REPUTATION, RUMOURS, WORK, BELONGINGS -> TOPICS;
+        };
+    }
 }

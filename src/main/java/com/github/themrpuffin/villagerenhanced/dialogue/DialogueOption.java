@@ -50,7 +50,14 @@ public enum DialogueOption {
      */
     ASK_ABOUT_WORK(null),
     /** Ask what they are carrying — personal enough to need real trust. */
-    SHOW_BELONGINGS(ReputationTier.TRUSTED);
+    SHOW_BELONGINGS(ReputationTier.TRUSTED),
+    /**
+     * Open the list of things you can ask about.
+     *
+     * <p>Never gated: the questions behind it carry their own requirements, and a branch that
+     * refuses to open tells the player nothing about why.
+     */
+    TOPICS(null);
 
     /** Lowest standing at which this option is available, or null if it is never gated. */
     private final @Nullable ReputationTier minimumStanding;

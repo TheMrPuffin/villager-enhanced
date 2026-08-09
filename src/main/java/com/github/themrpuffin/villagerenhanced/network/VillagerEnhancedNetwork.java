@@ -25,7 +25,8 @@ public final class VillagerEnhancedNetwork {
     // 3: that body became a list of lines, and DialogueOption gained GIFT and RUMOURS.
     // 4: DialogueOption gained ASK_NAME.
     // 5: DialogueOption gained ASK_ABOUT_WORK and SHOW_BELONGINGS.
-    private static final String NETWORK_VERSION = "5";
+    // 6: DialogueOption gained TOPICS; questions moved behind an "Ask about..." branch.
+    private static final String NETWORK_VERSION = "6";
 
     private VillagerEnhancedNetwork() {}
 

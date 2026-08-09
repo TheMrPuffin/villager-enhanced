@@ -11,6 +11,52 @@ saved data, config or the datapack schema; **MINOR** adds features; **PATCH** fi
 
 ## [Unreleased]
 
+## [0.6.0] - 2026-08-09
+
+Conversations that look and sound like conversations.
+
+No new things to ask about this time. This is the pass that makes the ones already there feel
+like talking to somebody.
+
+### Changed
+
+**The dialogue window was reworked**
+
+- What the villager says is now the clearest thing on screen, set in its own panel below a
+  divider, with their trade and level stepped back out of the way. Previously the speech was
+  the same shade as the label above it and got lost in the header.
+- Speech reads left to right like prose rather than being centred like a heading.
+- Long answers wrap inside the panel instead of running to the screen edges.
+
+**Fewer choices at once**
+
+- The greeting had grown to eight buttons. The four questions now sit behind a single
+  **"Ask about…"**, leaving the greeting to the things you actually *do* — trade, offer a gift,
+  and leave.
+- **Back** returns to the list you were in rather than jumping to the start of the conversation.
+
+### Added
+
+**Villagers speak rather than appear**
+
+- Lines arrive one at a time with a quiet mumble, so an answer unfolds instead of being posted.
+  Click or press a key to hear the rest at once.
+- Longer answers no longer shove the buttons around while they arrive.
+
+**Screen reader support**
+
+- The narrator now reads the villager's name, their trade, and what they actually said.
+  Previously it read the name and stopped.
+- Options you cannot use are described along with the reason, since they cannot be reached with
+  a keyboard to be read any other way.
+
+### Notes
+
+- Network protocol version raised to `6`. Clients and servers must both be on 0.6.0.
+- Requires Minecraft 26.2 and NeoForge 26.2.0.48-beta, as before.
+- The mumble is on the quiet side. It becomes an adjustable setting in 0.7.0 rather than being
+  guessed at again here.
+
 ## [0.5.0] - 2026-08-09
 
 Villagers tell you about themselves.
@@ -191,7 +237,8 @@ First playable release. Requires Minecraft 26.2 and NeoForge 26.2.0.48-beta.
 - Verified on both single-player and dedicated servers, including two simultaneous players.
 - Wandering Traders are deliberately out of scope.
 
-[Unreleased]: https://github.com/TheMrPuffin/villager-enhanced/compare/v0.5.0...HEAD
+[Unreleased]: https://github.com/TheMrPuffin/villager-enhanced/compare/v0.6.0...HEAD
+[0.6.0]: https://github.com/TheMrPuffin/villager-enhanced/releases/tag/v0.6.0
 [0.5.0]: https://github.com/TheMrPuffin/villager-enhanced/releases/tag/v0.5.0
 [0.4.0]: https://github.com/TheMrPuffin/villager-enhanced/releases/tag/v0.4.0
 [0.3.0]: https://github.com/TheMrPuffin/villager-enhanced/releases/tag/v0.3.0
