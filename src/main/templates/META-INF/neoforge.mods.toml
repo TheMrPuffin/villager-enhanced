@@ -29,8 +29,14 @@ displayName="${mod_name}" #mandatory
 # A URL for the "homepage" for this mod, displayed in the mod UI
 #displayURL="https://change.me.to.your.mods.homepage.example.invalid/" #optional
 
-# A file name (in the root of the mod JAR) containing a logo for display
-#logoFile="examplemod.png" #optional
+# The mod icon shown in the Mods list. The path is relative to the root of the built jar, and
+# anything in src/main/resources/ lands there -- so this file lives at
+# src/main/resources/villagerenhanced.png
+logoFile="villagerenhanced.png"
+
+# false keeps the icon crisp instead of smoothing it, which is what you want for pixel art.
+# Set to true if the icon is a smooth/photographic image that looks harsh unscaled.
+logoBlur=false
 
 # A text field displayed in the mod UI
 #credits="" #optional

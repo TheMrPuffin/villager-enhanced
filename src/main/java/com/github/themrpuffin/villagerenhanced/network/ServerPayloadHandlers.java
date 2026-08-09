@@ -1,6 +1,7 @@
 package com.github.themrpuffin.villagerenhanced.network;
 
 import com.github.themrpuffin.villagerenhanced.VillagerEnhanced;
+import com.github.themrpuffin.villagerenhanced.config.ServerConfig;
 import com.github.themrpuffin.villagerenhanced.dialogue.DialogueBuilder;
 import com.github.themrpuffin.villagerenhanced.dialogue.DialoguePage;
 import com.github.themrpuffin.villagerenhanced.dialogue.DialogueSessionManager;
@@ -25,9 +26,6 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
  */
 public final class ServerPayloadHandlers {
 
-    /** Matches vanilla's interaction reach. */
-    private static final double INTERACTION_REACH = 4.0;
-
     private ServerPayloadHandlers() {}
 
     /** Handles a player choosing a dialogue option. */
@@ -50,7 +48,7 @@ public final class ServerPayloadHandlers {
 
         // 4. Close enough to have plausibly clicked it. Without this a modified client could
         //    trade with a villager across the map.
-        if (!player.isWithinEntityInteractionRange(villager, INTERACTION_REACH)) {
+        if (!player.isWithinEntityInteractionRange(villager, ServerConfig.CONVERSATION_RANGE.get())) {
             VillagerEnhanced.LOGGER.debug(
                     "Rejected dialogue option from {}: villager {} out of reach",
                     player.getName().getString(), villager.getUUID());

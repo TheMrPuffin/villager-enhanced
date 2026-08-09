@@ -1,6 +1,7 @@
 package com.github.themrpuffin.villagerenhanced.dialogue;
 
 import com.github.themrpuffin.villagerenhanced.VillagerEnhanced;
+import com.github.themrpuffin.villagerenhanced.config.ServerConfig;
 
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.server.level.ServerPlayer;
@@ -24,19 +25,15 @@ import net.minecraft.world.item.trading.MerchantOffer;
  * all, can still be befriended.
  *
  * <p><b>Why this cannot be farmed.</b> Gifts add {@code MINOR_POSITIVE} gossip, which vanilla
- * caps at 25. At {@link #GOSSIP_PER_GIFT} per gift that is 13 gifts to reach the ceiling, worth
- * +25 reputation and no more however long you keep going — the same ceiling trading has. Gifts
- * therefore cannot reach the Honoured tier on their own; curing a zombie villager remains the
- * only route to that.
+ * caps at 25 — so gifting tops out at +25 reputation however long you keep going, the same
+ * ceiling trading has, and cannot reach the Honoured tier on its own. Curing a zombie villager
+ * remains the only route to that. Raising the per-gift amount in the config only changes how
+ * quickly the ceiling is reached, never the ceiling itself.
+ *
+ * <p>MINOR_POSITIVE decays at 1/day against trading's 2/day, so goodwill from gifts outlasts
+ * goodwill from business.
  */
 public final class VillagerGifts {
-
-    /**
-     * Gossip added per gift. MINOR_POSITIVE has weight 1, so this is also the reputation gained,
-     * and it decays at 1/day — slower than trading's 2/day, so goodwill from gifts lingers
-     * longer than goodwill from business.
-     */
-    private static final int GOSSIP_PER_GIFT = 2;
 
     /** Entity event 14 makes a villager emit happy particles on every watching client. */
     private static final byte HAPPY_PARTICLES_EVENT = 14;
@@ -84,7 +81,7 @@ public final class VillagerGifts {
             held.shrink(1);
         }
 
-        villager.gossips.add(player.getUUID(), GossipType.MINOR_POSITIVE, GOSSIP_PER_GIFT);
+        villager.gossips.add(player.getUUID(), GossipType.MINOR_POSITIVE, ServerConfig.GIFT_GOSSIP.get());
 
         // Feedback the player can actually see: the dialogue does not pause the game or hide
         // the world, so the villager visibly reacts behind the open screen.

@@ -1,6 +1,7 @@
 package com.github.themrpuffin.villagerenhanced.dialogue;
 
 import com.github.themrpuffin.villagerenhanced.VillagerEnhanced;
+import com.github.themrpuffin.villagerenhanced.config.ServerConfig;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -31,6 +32,12 @@ public final class VillagerInteractionHandler {
      * <i>whether</i> we act.
      */
     private static boolean isDialogueTarget(PlayerInteractEvent.EntityInteract event) {
+        // The master switch. False leaves the mod installed but dormant, so vanilla trading
+        // works exactly as it always did.
+        if (!ServerConfig.DIALOGUE_ENABLED.get()) {
+            return false;
+        }
+
         // A single right-click fires this event once per hand.
         if (event.getHand() != InteractionHand.MAIN_HAND) {
             return false;
@@ -95,8 +102,11 @@ public final class VillagerInteractionHandler {
 
         if (player.isSecondaryUseActive()) {
             // Sneak shortcut: straight to trading. Note this is us opening the trade screen
-            // deliberately -- vanilla's own response to a sneaking player is to do nothing.
-            VillagerTrading.openTradeScreen(player, villager);
+            // deliberately -- vanilla's own response to a sneaking player is to do nothing,
+            // which is also what happens when the shortcut is switched off.
+            if (ServerConfig.SNEAK_TO_TRADE.get()) {
+                VillagerTrading.openTradeScreen(player, villager);
+            }
             return;
         }
 

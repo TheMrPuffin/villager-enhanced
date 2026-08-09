@@ -3,6 +3,7 @@ package com.github.themrpuffin.villagerenhanced.dialogue;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.github.themrpuffin.villagerenhanced.config.ServerConfig;
 import com.github.themrpuffin.villagerenhanced.network.OpenDialoguePayload;
 
 import net.minecraft.network.chat.Component;
@@ -53,11 +54,17 @@ public final class DialogueBuilder {
             case GREETING -> List.of(greetingFor(player, villager));
             case REPUTATION -> {
                 int reputation = villager.getPlayerReputation(player);
-                yield List.of(Component.translatable(
-                        "villagerenhanced.dialogue.reputation.body",
-                        VillagerNames.displayNameFor(villager, player),
-                        ReputationTier.fromReputation(reputation).displayName(),
-                        reputation));
+                Component name = VillagerNames.displayNameFor(villager, player);
+                Component tier = ReputationTier.fromReputation(reputation).displayName();
+
+                // Whether the raw score is shown is a server setting rather than a personal one,
+                // because the dialogue text is written on the server: how much a villager gives
+                // away is content, not presentation.
+                yield List.of(ServerConfig.SHOW_RAW_REPUTATION.get()
+                        ? Component.translatable(
+                                "villagerenhanced.dialogue.reputation.body", name, tier, reputation)
+                        : Component.translatable(
+                                "villagerenhanced.dialogue.reputation.body_plain", name, tier));
             }
             case TOPICS -> List.of(Component.translatable("villagerenhanced.dialogue.topics.body"));
             case RUMOURS -> VillagerRumours.gather(player, villager);

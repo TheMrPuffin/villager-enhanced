@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import com.github.themrpuffin.villagerenhanced.config.ServerConfig;
+
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.npc.villager.Villager;
@@ -25,12 +27,6 @@ import net.minecraft.world.phys.AABB;
  */
 public final class VillagerRumours {
 
-    /** How far the speaker's acquaintances extend. Matches the naming radius: roughly a village. */
-    private static final double EARSHOT = 48.0;
-
-    /** Kept short so the page stays readable; the strongest opinions are the interesting ones. */
-    private static final int MAX_RUMOURS = 4;
-
     private VillagerRumours() {}
 
     /**
@@ -43,7 +39,7 @@ public final class VillagerRumours {
      * @return the lines to display, or a single line saying nobody has much to say
      */
     public static List<Component> gather(ServerPlayer player, Villager speaker) {
-        AABB area = speaker.getBoundingBox().inflate(EARSHOT);
+        AABB area = speaker.getBoundingBox().inflate(ServerConfig.RUMOUR_RADIUS.get());
         List<Villager> neighbours = speaker.level().getEntitiesOfClass(Villager.class, area);
 
         record Opinion(Villager villager, int reputation, ReputationTier tier) {}
@@ -72,7 +68,7 @@ public final class VillagerRumours {
         opinions.sort(Comparator.comparingInt((Opinion o) -> Math.abs(o.reputation())).reversed());
 
         List<Component> lines = new ArrayList<>();
-        for (Opinion opinion : opinions.subList(0, Math.min(MAX_RUMOURS, opinions.size()))) {
+        for (Opinion opinion : opinions.subList(0, Math.min(ServerConfig.RUMOUR_COUNT.get(), opinions.size()))) {
             lines.add(lineFor(opinion.villager(), opinion.tier()));
         }
         return List.copyOf(lines);

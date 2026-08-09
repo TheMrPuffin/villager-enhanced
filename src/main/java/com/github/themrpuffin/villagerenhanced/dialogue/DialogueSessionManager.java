@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import com.github.themrpuffin.villagerenhanced.VillagerEnhanced;
+import com.github.themrpuffin.villagerenhanced.config.ServerConfig;
 import com.github.themrpuffin.villagerenhanced.network.DialogueClosedPayload;
 
 import net.minecraft.network.chat.Component;
@@ -33,12 +34,6 @@ import org.jspecify.annotations.Nullable;
  */
 public final class DialogueSessionManager {
 
-    /**
-     * How far a player may drift before the conversation ends. Matches vanilla's
-     * {@code AbstractVillager#stillValid}, which closes the merchant menu at the same distance.
-     */
-    private static final double MAX_DISTANCE = 4.0;
-
     private static final Map<UUID, DialogueSession> SESSIONS = new HashMap<>();
 
     private DialogueSessionManager() {}
@@ -57,7 +52,12 @@ public final class DialogueSessionManager {
     public static void open(ServerPlayer player, Villager villager) {
         close(player, null);
 
-        villager.setTradingPlayer(player);
+        // Occupying the villager is what stops a second player talking to them. Servers that
+        // would rather several players share a villager can switch it off, in which case the
+        // villager is only ever occupied while actually trading, as in vanilla.
+        if (ServerConfig.HOLD_VILLAGER_DURING_DIALOGUE.get()) {
+            villager.setTradingPlayer(player);
+        }
         SESSIONS.put(player.getUUID(), new DialogueSession(
                 player.level().dimension(), villager.getId(), DialoguePage.GREETING));
     }
@@ -166,7 +166,7 @@ public final class DialogueSessionManager {
         if (!player.level().dimension().equals(session.dimension())) {
             return Component.translatable("villagerenhanced.dialogue.closed.too_far");
         }
-        if (!player.isWithinEntityInteractionRange(villager, MAX_DISTANCE)) {
+        if (!player.isWithinEntityInteractionRange(villager, ServerConfig.CONVERSATION_RANGE.get())) {
             return Component.translatable("villagerenhanced.dialogue.closed.too_far");
         }
         return null;

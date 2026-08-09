@@ -17,6 +17,7 @@
 
   "villagerenhanced.dialogue.topics.body": "What would you like to know?",
   "villagerenhanced.dialogue.reputation.body": "%s regards you as %s. (%s)",
+  "villagerenhanced.dialogue.reputation.body_plain": "%s regards you as %s.",
 
   "villagerenhanced.dialogue.rumours.subject": "%s the %s",
   "villagerenhanced.dialogue.rumours.none": "Nobody around here has much to say about you yet.",
@@ -40,6 +41,25 @@
   "villagerenhanced.dialogue.no_belongings": "They'd have to trust you a good deal more before showing you that.",
 
   "villagerenhanced.narration.unavailable": "%s — unavailable. %s",
+
+  "villagerenhanced.configuration.title": "Villager Enhanced",
+  "villagerenhanced.configuration.section.presentation": "Presentation",
+  "villagerenhanced.configuration.section.presentation.title": "How the dialogue looks and sounds",
+  "villagerenhanced.configuration.section.dialogue": "Dialogue",
+  "villagerenhanced.configuration.section.dialogue.title": "What villagers will do",
+  "villagerenhanced.configuration.section.reputation": "Reputation",
+  "villagerenhanced.configuration.section.reputation.title": "Reputation, gifts and gossip",
+
+  "villagerenhanced.config.voice_volume": "Voice volume",
+  "villagerenhanced.config.reveal_ticks_per_line": "Ticks per line of dialogue",
+  "villagerenhanced.config.dialogue_enabled": "Enable villager dialogue",
+  "villagerenhanced.config.sneak_to_trade": "Sneak to trade directly",
+  "villagerenhanced.config.hold_villager": "Occupy villager during dialogue",
+  "villagerenhanced.config.conversation_range": "Conversation range (blocks)",
+  "villagerenhanced.config.gift_gossip": "Reputation gained per gift",
+  "villagerenhanced.config.rumour_count": "Rumours shown at once",
+  "villagerenhanced.config.rumour_radius": "Rumour radius (blocks)",
+  "villagerenhanced.config.show_raw_reputation": "Show raw reputation score",
 
   "villagerenhanced.dialogue.work.none": "Nothing, at the moment. I've not found my trade yet.",
   "villagerenhanced.dialogue.work.nitwit": "Me? Oh, I keep busy. Very busy. Mostly with the standing.",

@@ -11,6 +11,44 @@ saved data, config or the datapack schema; **MINOR** adds features; **PATCH** fi
 
 ## [Unreleased]
 
+## [0.7.0] - 2026-08-09
+
+Settings, so you can have it your way.
+
+Ten things the mod used to decide for you are now yours to decide. Reachable from
+**Mods → Villager Enhanced → Config**, no file editing required.
+
+### Added
+
+**Your settings** — personal, and they affect only you
+
+- **Voice volume.** The mumble was too quiet; it is louder by default and now adjustable. Set
+  it to 0 to silence villagers entirely.
+- **Dialogue speed.** How quickly lines appear, or 0 to show whole answers at once. Villagers
+  still speak when it is off — once per answer rather than once per line.
+
+**World settings** — set by whoever runs the world, and shared by everyone on it
+
+- **Turn the dialogue off entirely.** Right-clicking a villager goes back to plain vanilla
+  trading, with the mod installed but dormant. Useful alongside other mods that change villager
+  interaction.
+- **Sneak to trade**, on or off.
+- **Whether a villager is occupied for a whole conversation.** On a busy server you may prefer
+  they are not, so several players can talk to the same villager.
+- **Conversation range**, how far you can wander before a villager gives up on you.
+- **Reputation gained per gift**, how many rumours a villager passes on, and how far their
+  acquaintances reach.
+- **Whether the reputation page shows the raw score** beside the tier, or just the tier.
+
+**A mod icon**, so the mod is recognisable in the Mods list.
+
+### Notes
+
+- Requires Minecraft 26.2 and NeoForge 26.2.0.48-beta, as before.
+- No protocol change this time; 0.7.0 clients and servers talk to 0.6.0 ones.
+- Gift value only changes how quickly a villager's opinion tops out, never how high. Reaching
+  the highest regard still takes more than generosity.
+
 ## [0.6.0] - 2026-08-09
 
 Conversations that look and sound like conversations.
@@ -237,7 +275,8 @@ First playable release. Requires Minecraft 26.2 and NeoForge 26.2.0.48-beta.
 - Verified on both single-player and dedicated servers, including two simultaneous players.
 - Wandering Traders are deliberately out of scope.
 
-[Unreleased]: https://github.com/TheMrPuffin/villager-enhanced/compare/v0.6.0...HEAD
+[Unreleased]: https://github.com/TheMrPuffin/villager-enhanced/compare/v0.7.0...HEAD
+[0.7.0]: https://github.com/TheMrPuffin/villager-enhanced/releases/tag/v0.7.0
 [0.6.0]: https://github.com/TheMrPuffin/villager-enhanced/releases/tag/v0.6.0
 [0.5.0]: https://github.com/TheMrPuffin/villager-enhanced/releases/tag/v0.5.0
 [0.4.0]: https://github.com/TheMrPuffin/villager-enhanced/releases/tag/v0.4.0

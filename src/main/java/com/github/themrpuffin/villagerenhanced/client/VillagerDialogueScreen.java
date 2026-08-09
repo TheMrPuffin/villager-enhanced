@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.github.themrpuffin.villagerenhanced.config.ClientConfig;
 import com.github.themrpuffin.villagerenhanced.dialogue.DialogueOption;
 import com.github.themrpuffin.villagerenhanced.dialogue.DialogueOptionEntry;
 import com.github.themrpuffin.villagerenhanced.network.ChooseDialogueOptionPayload;
@@ -71,10 +72,6 @@ public class VillagerDialogueScreen extends Screen {
     /** Space left below the last button. */
     private static final int BOTTOM_MARGIN = 8;
 
-    /** Ticks between lines appearing; twenty ticks is one second. */
-    private static final int REVEAL_TICKS_PER_LINE = 5;
-    /** Quiet enough to read as punctuation rather than an interruption. */
-    private static final float VOICE_VOLUME = 0.2F;
 
     /**
      * Shortest the speech panel is allowed to be, in lines. Keeps the panel and the buttons from
@@ -198,17 +195,41 @@ public class VillagerDialogueScreen extends Screen {
         if (this.revealedLines >= this.dialogue.bodyLines().size()) {
             return;
         }
+
+        int ticksPerLine = ClientConfig.REVEAL_TICKS_PER_LINE.get();
+        if (ticksPerLine <= 0) {
+            // Reveal disabled: the whole answer at once, and a single mumble to go with it.
+            // Turning off the animation should not also mute the villager -- but one sound per
+            // line would fire the entire lot in the same tick, which is a mess rather than a
+            // voice. The villager speaks once because the answer arrives once.
+            this.revealAll();
+            this.playVoice();
+            return;
+        }
         if (--this.revealDelay > 0) {
             return;
         }
 
-        this.revealDelay = REVEAL_TICKS_PER_LINE;
+        this.revealDelay = ticksPerLine;
         this.revealedLines++;
         this.rebuildVisibleBody();
+        this.playVoice();
+    }
+
+    /**
+     * A short villager mumble, pitched by line index so a multi-line answer does not sound like
+     * the same grunt repeated. Derived from the index rather than a random source, so a given
+     * page always sounds the same.
+     */
+    private void playVoice() {
+        float volume = (float) (double) ClientConfig.VOICE_VOLUME.get();
+        if (volume <= 0.0F) {
+            return;
+        }
 
         float pitch = 0.9F + (this.revealedLines % 3) * 0.1F;
         Minecraft.getInstance().getSoundManager().play(
-                SimpleSoundInstance.forUI(SoundEvents.VILLAGER_AMBIENT, pitch, VOICE_VOLUME));
+                SimpleSoundInstance.forUI(SoundEvents.VILLAGER_AMBIENT, pitch, volume));
     }
 
     /**
