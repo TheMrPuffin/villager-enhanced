@@ -15,5 +15,9 @@ public enum DialoguePage {
     /** How this villager regards the player. */
     REPUTATION,
     /** What the other villagers nearby think of the player. */
-    RUMOURS
+    RUMOURS,
+    /** What this villager does for a living. */
+    WORK,
+    /** What this villager is carrying. */
+    BELONGINGS
 }

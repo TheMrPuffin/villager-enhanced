@@ -11,6 +11,40 @@ saved data, config or the datapack schema; **MINOR** adds features; **PATCH** fi
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-08-09
+
+Villagers tell you about themselves.
+
+Until now a villager's job was a word under their name. Now you can ask about it — and if they
+trust you enough, ask what they are carrying.
+
+### Added
+
+**"What do you do?"**
+
+- Every profession has something to say about their trade, in their own words. Farmers,
+  librarians, weaponsmiths, and the rest — including nitwits, who are evasive about it, and the
+  unemployed, who have not settled on anything yet.
+- Anyone who trades will also tell you how far along their trade they are, and whether there is
+  better work in them yet.
+- Anyone will answer this, whatever they think of you. Asking someone about their work is not a
+  favour.
+
+**"What are you carrying?"**
+
+- Minecraft villagers have always carried a real inventory — bread, seeds, crops they have
+  gathered. They eat from it, plant from it, and hand food to villagers who want to breed. You
+  have never been able to see it.
+- Now you can ask, but only if they properly trust you. This is the first thing that being
+  Trusted unlocks.
+- Expect most villagers to be carrying nothing much. That in itself tells you something: the
+  one with twenty bread is the one about to raise a family.
+
+### Notes
+
+- Network protocol version raised to `5`. Clients and servers must both be on 0.5.0.
+- Requires Minecraft 26.2 and NeoForge 26.2.0.48-beta, as before.
+
 ## [0.4.0] - 2026-08-06
 
 Villagers remember you — and decide how much to tell you.
@@ -157,7 +191,8 @@ First playable release. Requires Minecraft 26.2 and NeoForge 26.2.0.48-beta.
 - Verified on both single-player and dedicated servers, including two simultaneous players.
 - Wandering Traders are deliberately out of scope.
 
-[Unreleased]: https://github.com/TheMrPuffin/villager-enhanced/compare/v0.4.0...HEAD
+[Unreleased]: https://github.com/TheMrPuffin/villager-enhanced/compare/v0.5.0...HEAD
+[0.5.0]: https://github.com/TheMrPuffin/villager-enhanced/releases/tag/v0.5.0
 [0.4.0]: https://github.com/TheMrPuffin/villager-enhanced/releases/tag/v0.4.0
 [0.3.0]: https://github.com/TheMrPuffin/villager-enhanced/releases/tag/v0.3.0
 [0.2.0]: https://github.com/TheMrPuffin/villager-enhanced/releases/tag/v0.2.0

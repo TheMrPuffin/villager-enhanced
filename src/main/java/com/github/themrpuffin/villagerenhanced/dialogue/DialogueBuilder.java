@@ -60,6 +60,8 @@ public final class DialogueBuilder {
                         reputation));
             }
             case RUMOURS -> VillagerRumours.gather(player, villager);
+            case WORK -> VillagerWork.describe(villager);
+            case BELONGINGS -> VillagerBelongings.describe(villager);
         };
     }
 
@@ -86,7 +88,7 @@ public final class DialogueBuilder {
             ServerPlayer player, Villager villager, DialoguePage page) {
         return switch (page) {
             case GREETING -> greetingOptions(player, villager);
-            case REPUTATION, RUMOURS -> List.of(
+            case REPUTATION, RUMOURS, WORK, BELONGINGS -> List.of(
                     new DialogueOptionEntry(DialogueOption.BACK, true),
                     new DialogueOptionEntry(DialogueOption.LEAVE, true));
         };
@@ -108,28 +110,33 @@ public final class DialogueBuilder {
         ReputationTier standing = ReputationTier.fromReputation(villager.getPlayerReputation(player));
         List<DialogueOptionEntry> options = new ArrayList<>();
 
-        // Asking someone's name stops being a sensible thing to say once you know it, so the
-        // option disappears rather than sitting there greyed out forever. Refused by anyone who
-        // actively dislikes the player -- but freely given by an ordinary stranger, so naming is
-        // not hidden behind grinding reputation first.
+        // Asking someone's name stops being a sensible thing to say once you know it, so this
+        // option disappears rather than sitting greyed out forever asking an answered question.
         if (!VillagerMemory.isIntroduced(villager, player)) {
-            options.add(new DialogueOptionEntry(
-                    DialogueOption.ASK_NAME, standing.isAtLeast(ReputationTier.STRANGER)));
+            options.add(entry(DialogueOption.ASK_NAME, standing, true));
         }
 
         // Nitwits, the unemployed and babies have no offers.
-        options.add(new DialogueOptionEntry(DialogueOption.TRADE, !villager.getOffers().isEmpty()));
-        options.add(new DialogueOptionEntry(DialogueOption.GIFT,
+        options.add(entry(DialogueOption.TRADE, standing, !villager.getOffers().isEmpty()));
+        options.add(entry(DialogueOption.GIFT, standing,
                 VillagerGifts.isAcceptable(villager, player.getMainHandItem())));
-        options.add(new DialogueOptionEntry(DialogueOption.VIEW_REPUTATION, true));
-
-        // Confiding in someone about the neighbours is something you do for people you like.
-        options.add(new DialogueOptionEntry(
-                DialogueOption.RUMOURS, standing.isAtLeast(ReputationTier.ACQUAINTANCE)));
-
-        options.add(new DialogueOptionEntry(DialogueOption.LEAVE, true));
+        options.add(entry(DialogueOption.ASK_ABOUT_WORK, standing, true));
+        options.add(entry(DialogueOption.VIEW_REPUTATION, standing, true));
+        options.add(entry(DialogueOption.RUMOURS, standing, true));
+        options.add(entry(DialogueOption.SHOW_BELONGINGS, standing, true));
+        options.add(entry(DialogueOption.LEAVE, standing, true));
 
         return List.copyOf(options);
+    }
+
+    /**
+     * Combines the two reasons an option can be unavailable: the player's standing, declared on
+     * {@link DialogueOption}, and whatever the situation demands — offers to trade, something in
+     * hand to give.
+     */
+    private static DialogueOptionEntry entry(
+            DialogueOption option, ReputationTier standing, boolean situationAllows) {
+        return new DialogueOptionEntry(option, situationAllows && option.isUnlockedAt(standing));
     }
 
     /**

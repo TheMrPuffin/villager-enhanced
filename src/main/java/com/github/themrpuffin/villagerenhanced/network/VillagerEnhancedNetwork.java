@@ -24,7 +24,8 @@ public final class VillagerEnhancedNetwork {
     //    Component, and DialogueOption gained VIEW_REPUTATION and BACK.
     // 3: that body became a list of lines, and DialogueOption gained GIFT and RUMOURS.
     // 4: DialogueOption gained ASK_NAME.
-    private static final String NETWORK_VERSION = "4";
+    // 5: DialogueOption gained ASK_ABOUT_WORK and SHOW_BELONGINGS.
+    private static final String NETWORK_VERSION = "5";
 
     private VillagerEnhancedNetwork() {}
 
