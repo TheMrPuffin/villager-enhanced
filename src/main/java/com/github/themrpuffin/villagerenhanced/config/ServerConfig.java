@@ -27,8 +27,14 @@ public final class ServerConfig {
     /** Whether a villager is occupied for the whole conversation, not just while trading. */
     public static final ModConfigSpec.BooleanValue HOLD_VILLAGER_DURING_DIALOGUE;
 
-    /** How far a player may be from a villager before the conversation ends. */
-    public static final ModConfigSpec.DoubleValue CONVERSATION_RANGE;
+    /**
+     * How far a player may be from a villager before the conversation ends, in whole blocks.
+     *
+     * <p>An int rather than a double for the same reason as the voice volume: NeoForge's config
+     * screen gives a ranged int a slider and a double a text box that will not accept a decimal
+     * point. Whole blocks are plenty of precision here.
+     */
+    public static final ModConfigSpec.IntValue CONVERSATION_RANGE;
 
     /** Gossip added per gift. Vanilla caps the underlying value at 25 regardless. */
     public static final ModConfigSpec.IntValue GIFT_GOSSIP;
@@ -84,7 +90,7 @@ public final class ServerConfig {
                         "Also the reach the server validates every dialogue action against, so raising it",
                         "raises how far away players may act on a villager.")
                 .translation("villagerenhanced.config.conversation_range")
-                .defineInRange("conversationRange", 4.0D, 2.0D, 16.0D);
+                .defineInRange("conversationRange", 4, 2, 16);
 
         builder.pop();
 
@@ -135,9 +141,11 @@ public final class ServerConfig {
                 .comment(
                         "How close a player must be to hear about it, in blocks.",
                         "Generous by default, since the point is hearing about a raid you are not",
-                        "standing in. A busy server with many villages will want this smaller.")
+                        "standing in. A busy server with many villages will want this smaller.",
+                        "Capped at 256: villagers outside simulation distance are not ticking, so",
+                        "nothing happens out there to be told about.")
                 .translation("villagerenhanced.config.notification_radius")
-                .defineInRange("notificationRadius", 128, 16, 512);
+                .defineInRange("notificationRadius", 128, 16, 256);
 
         builder.pop();
         SPEC = builder.build();

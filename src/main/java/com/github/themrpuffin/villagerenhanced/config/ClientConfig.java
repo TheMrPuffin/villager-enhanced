@@ -13,8 +13,15 @@ public final class ClientConfig {
 
     public static final ModConfigSpec SPEC;
 
-    /** Volume of the villager's mumble as each line appears. 0 mutes it. */
-    public static final ModConfigSpec.DoubleValue VOICE_VOLUME;
+    /**
+     * Volume of the villager's mumble as each line appears, as a percentage. 0 mutes it.
+     *
+     * <p><b>Deliberately an int, not a double.</b> NeoForge's config screen renders a ranged
+     * integer as a slider, but any double as a text box — and that box will not accept a decimal
+     * point, so a 0.0–1.0 double is only settable to 0 or 1 through the UI. A percentage gets a
+     * usable slider and reads more naturally besides.
+     */
+    public static final ModConfigSpec.IntValue VOICE_VOLUME_PERCENT;
 
     /** Ticks between lines appearing. 0 shows the whole answer at once. */
     public static final ModConfigSpec.IntValue REVEAL_TICKS_PER_LINE;
@@ -28,12 +35,12 @@ public final class ClientConfig {
         builder.comment("How the dialogue window looks and sounds. These affect only you.")
                 .push("presentation");
 
-        VOICE_VOLUME = builder
+        VOICE_VOLUME_PERCENT = builder
                 .comment(
-                        "Volume of the villager's mumble as each line of dialogue appears.",
+                        "Volume of the villager's mumble as each line of dialogue appears, in percent.",
                         "Set to 0 to silence it.")
                 .translation("villagerenhanced.config.voice_volume")
-                .defineInRange("voiceVolume", 0.45D, 0.0D, 1.0D);
+                .defineInRange("voiceVolumePercent", 45, 0, 100);
 
         REVEAL_TICKS_PER_LINE = builder
                 .comment(
@@ -41,7 +48,7 @@ public final class ClientConfig {
                         "Set to 0 to show the whole answer immediately. The villager still speaks,",
                         "once rather than once per line; use voiceVolume to silence them.")
                 .translation("villagerenhanced.config.reveal_ticks_per_line")
-                .defineInRange("revealTicksPerLine", 5, 0, 20);
+                .defineInRange("revealTicksPerLine", 15, 0, 20);
 
         SHOW_NOTIFICATIONS = builder
                 .comment(

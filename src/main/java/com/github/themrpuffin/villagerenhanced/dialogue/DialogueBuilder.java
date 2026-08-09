@@ -52,6 +52,15 @@ public final class DialogueBuilder {
     private static List<Component> bodyFor(ServerPlayer player, Villager villager, DialoguePage page) {
         return switch (page) {
             case GREETING -> List.of(greetingFor(player, villager));
+            // Two lines rather than one, so the reveal lands them as a beat: the name, then the
+            // pleasantry.
+            case INTRODUCTION -> List.of(
+                    Component.translatable(
+                            "villagerenhanced.dialogue.introduction.name",
+                            VillagerNames.nameFor(villager)),
+                    Component.translatable(
+                            "villagerenhanced.dialogue.introduction.greeting",
+                            player.getDisplayName()));
             case REPUTATION -> {
                 int reputation = villager.getPlayerReputation(player);
                 Component name = VillagerNames.displayNameFor(villager, player);
@@ -95,7 +104,7 @@ public final class DialogueBuilder {
     public static List<DialogueOptionEntry> optionsFor(
             ServerPlayer player, Villager villager, DialoguePage page) {
         return switch (page) {
-            case GREETING -> greetingOptions(player, villager);
+            case GREETING, INTRODUCTION -> greetingOptions(player, villager);
             case TOPICS -> topicOptions(player, villager);
             case REPUTATION, RUMOURS, WORK, BELONGINGS -> List.of(
                     new DialogueOptionEntry(DialogueOption.BACK, true),

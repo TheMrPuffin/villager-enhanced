@@ -11,6 +11,14 @@ package com.github.themrpuffin.villagerenhanced.dialogue;
 public enum DialoguePage {
     /** The opening page: what a villager says when you first speak to them. */
     GREETING,
+    /**
+     * The greeting, with the villager actually giving their name.
+     *
+     * <p>Shown once, immediately after being asked. Otherwise the only sign anything happened is
+     * the window title quietly changing, which makes asking feel like it did nothing. Offers the
+     * same options as the greeting, so it functions as one.
+     */
+    INTRODUCTION,
     /** The list of things you can ask about, which keeps the greeting from filling with them. */
     TOPICS,
     /** How this villager regards the player. */
@@ -30,8 +38,8 @@ public enum DialoguePage {
      */
     public DialoguePage parent() {
         return switch (this) {
-            // Already the root; Back is never offered here.
-            case GREETING -> GREETING;
+            // Already the root; Back is never offered on either.
+            case GREETING, INTRODUCTION -> GREETING;
             case TOPICS -> GREETING;
             case REPUTATION, RUMOURS, WORK, BELONGINGS -> TOPICS;
         };

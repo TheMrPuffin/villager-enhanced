@@ -2,6 +2,8 @@
   "villagerenhanced.dialogue.greeting": "Hello, %s!",
   "villagerenhanced.dialogue.greeting.stranger": "Yes? Something you needed?",
   "villagerenhanced.dialogue.greeting.absent": "It's been a while, %s.",
+  "villagerenhanced.dialogue.introduction.name": "They call me %s.",
+  "villagerenhanced.dialogue.introduction.greeting": "Pleased to meet you, %s.",
   "villagerenhanced.dialogue.subtitle": "%s · Level %s",
 
   "villagerenhanced.dialogue.option.ask_name": "What should I call you?",
@@ -55,7 +57,7 @@
   "villagerenhanced.configuration.section.reputation": "Reputation",
   "villagerenhanced.configuration.section.reputation.title": "Reputation, gifts and gossip",
 
-  "villagerenhanced.config.voice_volume": "Voice volume",
+  "villagerenhanced.config.voice_volume": "Voice volume (%)",
   "villagerenhanced.config.reveal_ticks_per_line": "Ticks per line of dialogue",
   "villagerenhanced.config.dialogue_enabled": "Enable villager dialogue",
   "villagerenhanced.config.sneak_to_trade": "Sneak to trade directly",

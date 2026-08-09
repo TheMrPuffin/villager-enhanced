@@ -222,7 +222,7 @@ public class VillagerDialogueScreen extends Screen {
      * page always sounds the same.
      */
     private void playVoice() {
-        float volume = (float) (double) ClientConfig.VOICE_VOLUME.get();
+        float volume = ClientConfig.VOICE_VOLUME_PERCENT.get() / 100.0F;
         if (volume <= 0.0F) {
             return;
         }

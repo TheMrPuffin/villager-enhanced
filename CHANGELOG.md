@@ -11,6 +11,39 @@ saved data, config or the datapack schema; **MINOR** adds features; **PATCH** fi
 
 ## [Unreleased]
 
+## [0.8.1] - 2026-08-09
+
+Fixes from actually playing it.
+
+### Fixed
+
+- **Villager births were never announced.** The birth half of 0.8.0's notifications did not work
+  at all — it listened for an event that Minecraft does not raise for villagers. Breeding a pair
+  now announces the child properly. Walking into a village that already contains children stays
+  quiet, as it should.
+- **Several settings could not be changed.** Voice volume and conversation range were decimal
+  values shown as text boxes that refuse a decimal point, so they could only be set to whole
+  numbers — voice volume was effectively off or full. Every numeric setting is now a slider.
+- **Villagers with no profession wandered off mid-conversation** while everyone else stood and
+  listened, and two players could talk to the same one at once. Both fixed; unemployed villagers
+  now behave like the rest.
+
+### Changed
+
+- **Asking a villager's name now gets you an introduction.** They tell you their name and greet
+  you properly, rather than the window title quietly changing while they say "Hello" as though
+  nothing had happened.
+- **Dialogue is paced more slowly by default** — three quarters of a second per line rather than
+  a quarter. Adjustable as before, including off.
+
+### Notes
+
+- **Voice volume and conversation range reset to their defaults** when you update, because both
+  changed form. Re-set them if you had tuned them.
+- The notification radius maximum is now 256 rather than 512. Villagers beyond simulation
+  distance are not running, so nothing happens out there to hear about.
+- No protocol change; 0.8.1 talks to 0.8.0 clients and servers.
+
 ## [0.8.0] - 2026-08-09
 
 Find out what happened while you were away.
@@ -306,7 +339,8 @@ First playable release. Requires Minecraft 26.2 and NeoForge 26.2.0.48-beta.
 - Verified on both single-player and dedicated servers, including two simultaneous players.
 - Wandering Traders are deliberately out of scope.
 
-[Unreleased]: https://github.com/TheMrPuffin/villager-enhanced/compare/v0.8.0...HEAD
+[Unreleased]: https://github.com/TheMrPuffin/villager-enhanced/compare/v0.8.1...HEAD
+[0.8.1]: https://github.com/TheMrPuffin/villager-enhanced/releases/tag/v0.8.1
 [0.8.0]: https://github.com/TheMrPuffin/villager-enhanced/releases/tag/v0.8.0
 [0.7.0]: https://github.com/TheMrPuffin/villager-enhanced/releases/tag/v0.7.0
 [0.6.0]: https://github.com/TheMrPuffin/villager-enhanced/releases/tag/v0.6.0

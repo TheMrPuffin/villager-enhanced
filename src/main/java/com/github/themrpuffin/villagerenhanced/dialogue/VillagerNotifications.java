@@ -1,5 +1,8 @@
 package com.github.themrpuffin.villagerenhanced.dialogue;
 
+import java.util.Comparator;
+import java.util.List;
+
 import com.github.themrpuffin.villagerenhanced.VillagerEnhanced;
 import com.github.themrpuffin.villagerenhanced.config.ServerConfig;
 import com.github.themrpuffin.villagerenhanced.network.VillagerNotificationPayload;
@@ -10,9 +13,10 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.npc.villager.Villager;
+import net.minecraft.world.phys.AABB;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.event.entity.living.BabyEntitySpawnEvent;
+import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 
@@ -60,29 +64,63 @@ public final class VillagerNotifications {
         });
     }
 
+    /** How far from a newborn to look for the adults that produced it. */
+    private static final double PARENT_SEARCH_RADIUS = 8.0;
+
     /**
      * A villager was born.
      *
-     * <p>Named after the parents rather than the child: the event fires before the baby is added
-     * to the world, so naming it here would assign a name from a position it does not have yet.
+     * <p><b>Not {@code BabyEntitySpawnEvent}</b>, which despite the name is fired only by
+     * {@code Animal} and {@code Fox}. Villagers descend from {@code AgeableMob}, not
+     * {@code Animal}, and breed through the {@code VillagerMakeLove} brain behaviour, which adds
+     * the child with {@code addFreshEntityWithPassengers} and raises no event of its own. Hooking
+     * the baby joining the level is the only signal there is.
+     *
+     * <p>That signal is broader than a birth, though: it also fires for baby villagers in a
+     * village being generated as a player explores into it, and for spawn eggs. They are told
+     * apart by the parents. {@code VillagerMakeLove} sets both parents to age 6000 — their
+     * breeding cooldown — <i>before</i> adding the child, so at this moment a real birth has two
+     * adults beside it on cooldown, where a freshly generated village has adults at age 0.
+     * Finding them also supplies the names for the message.
      */
     @SubscribeEvent
-    public static void onVillagerBorn(BabyEntitySpawnEvent event) {
+    public static void onVillagerBorn(EntityJoinLevelEvent event) {
         if (!ServerConfig.NOTIFY_VILLAGER_BIRTHS.get()) {
             return;
         }
-        if (!(event.getParentA() instanceof Villager parentA)
-                || !(event.getParentB() instanceof Villager parentB)) {
+        if (event.loadedFromDisk()) {
             return;
         }
-        if (!(parentA.level() instanceof ServerLevel level)) {
+        if (!(event.getEntity() instanceof Villager child) || !child.isBaby()) {
+            return;
+        }
+        if (!(event.getLevel() instanceof ServerLevel level)) {
             return;
         }
 
-        notifyNearby(level, parentA, player -> Component.translatable(
+        List<Villager> parents = parentsOf(level, child);
+        if (parents.size() < 2) {
+            return;
+        }
+
+        Villager parentA = parents.get(0);
+        Villager parentB = parents.get(1);
+        notifyNearby(level, child, player -> Component.translatable(
                 "villagerenhanced.notification.born",
                 subjectOf(parentA, player),
                 subjectOf(parentB, player)));
+    }
+
+    /** The two nearest adults on breeding cooldown, which is what a just-bred pair looks like. */
+    private static List<Villager> parentsOf(ServerLevel level, Villager child) {
+        AABB area = child.getBoundingBox().inflate(PARENT_SEARCH_RADIUS);
+
+        return level.getEntitiesOfClass(Villager.class, area,
+                        other -> other != child && !other.isBaby() && other.getAge() > 0)
+                .stream()
+                .sorted(Comparator.comparingDouble(other -> other.distanceToSqr(child)))
+                .limit(2)
+                .toList();
     }
 
     /**

@@ -38,8 +38,31 @@ public final class DialogueSessionManager {
 
     private DialogueSessionManager() {}
 
-    /** Is this villager already occupied by somebody other than this player? */
+    /**
+     * Is this villager already occupied by somebody other than this player?
+     *
+     * <p><b>Our own sessions are the authority, not vanilla's trading-player flag.</b> Vanilla
+     * clears that flag every tick for villagers with no profession —
+     * {@code customServerAiStep} calls {@code stopTrading()} whenever an unemployed villager is
+     * marked as trading — so relying on it alone would leave the unemployed unprotected, and two
+     * players could hold a conversation with the same one. Nitwits are unaffected, since the
+     * check is against {@code NONE} specifically.
+     *
+     * <p>The vanilla flag is still consulted afterwards, because someone may be mid-trade
+     * through the merchant screen rather than in a dialogue.
+     */
     public static boolean isBusyWithSomeoneElse(Villager villager, ServerPlayer player) {
+        for (Map.Entry<UUID, DialogueSession> entry : SESSIONS.entrySet()) {
+            if (entry.getKey().equals(player.getUUID())) {
+                continue;
+            }
+            DialogueSession session = entry.getValue();
+            if (session.villagerId() == villager.getId()
+                    && session.dimension().equals(villager.level().dimension())) {
+                return true;
+            }
+        }
+
         return villager.isTrading() && villager.getTradingPlayer() != player;
     }
 
@@ -139,6 +162,16 @@ public final class DialogueSessionManager {
             Villager villager = resolveVillager(server, session);
             Component reason = invalidReason(player, villager, session);
             if (reason == null) {
+                // Vanilla clears the trading-player flag every tick on villagers with no
+                // profession, so re-assert it. Without this, an unemployed villager wanders off
+                // mid-conversation while every other villager politely stands and faces you --
+                // the flag is what drives LookAndFollowTradingPlayerSink, the brain behaviour
+                // that walks a villager to whoever it is dealing with.
+                if (villager != null && player != null
+                        && ServerConfig.HOLD_VILLAGER_DURING_DIALOGUE.get()
+                        && villager.getTradingPlayer() != player) {
+                    villager.setTradingPlayer(player);
+                }
                 continue;
             }
 

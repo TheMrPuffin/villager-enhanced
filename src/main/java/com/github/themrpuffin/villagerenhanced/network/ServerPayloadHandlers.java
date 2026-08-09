@@ -96,10 +96,11 @@ public final class ServerPayloadHandlers {
                 DialogueBuilder.send(player, villager, DialoguePage.GREETING);
             }
             case ASK_NAME -> {
-                // Resending the greeting is the payoff: the title changes from "Farmer" to
-                // their name, and the greeting warms up, in one visible step.
+                // The introduction page rather than the plain greeting, so the villager actually
+                // says their name. Sending the greeting alone changed only the window title,
+                // which made asking feel like it had done nothing.
                 VillagerMemory.introduce(villager, player);
-                DialogueBuilder.send(player, villager, DialoguePage.GREETING);
+                DialogueBuilder.send(player, villager, DialoguePage.INTRODUCTION);
             }
             case TOPICS -> DialogueBuilder.send(player, villager, DialoguePage.TOPICS);
             case VIEW_REPUTATION -> DialogueBuilder.send(player, villager, DialoguePage.REPUTATION);
