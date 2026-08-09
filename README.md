@@ -4,6 +4,8 @@ A NeoForge mod that turns Minecraft's villagers from vending machines into peopl
 a villager opens a conversation instead of a trade window — and they have names, opinions about
 you, and things to say about each other.
 
+![Talking to a villager](docs/images/greeting.png)
+
 | | |
 |---|---|
 | **Minecraft** | 26.2 |
@@ -47,6 +49,11 @@ has been away a few days.
 and by what.
 
 **Sneak + right-click** skips the conversation and trades directly.
+
+|  |  |
+|---|---|
+| ![Where you stand with a villager](docs/images/regards.png) | ![What the other villagers say](docs/images/gossip.png) |
+| Where you stand with one villager | What the rest of the village says about you |
 
 ## Configuration
 

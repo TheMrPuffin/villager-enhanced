@@ -5,6 +5,8 @@ Minecraft's villagers are vending machines that happen to have legs. This mod ma
 Right-click a villager and you get a conversation instead of a shop window. Trading is still
 right there — it is just no longer the *only* thing a villager is for.
 
+![Talking to a villager](https://raw.githubusercontent.com/TheMrPuffin/villager-enhanced/main/docs/images/greeting.png)
+
 ### They have names
 
 Every villager has one, and keeps it. Names differ by region, so a desert settlement sounds
@@ -27,6 +29,8 @@ villager and you have done something the whole village will remember.
 You can also simply be generous. Offer a villager something they would buy, or any food, and
 their opinion improves — though generosity alone will never earn you the highest regard.
 
+![Where you stand with a villager](https://raw.githubusercontent.com/TheMrPuffin/villager-enhanced/main/docs/images/regards.png)
+
 ### They talk about each other
 
 This is the part Minecraft has been hiding from you.
@@ -40,6 +44,8 @@ meet. You have never been able to see any of it. Now you can ask.
 A villager you have **never met** can already have an opinion of you, because they heard it from
 someone who has. Deal fairly with one farmer and in time the whole village knows you are good
 for it. Hurt someone and word travels just as fast.
+
+![What the other villagers say about you](https://raw.githubusercontent.com/TheMrPuffin/villager-enhanced/main/docs/images/gossip.png)
 
 ### They remember you
 
