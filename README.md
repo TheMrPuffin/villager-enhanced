@@ -1,37 +1,67 @@
 # Villager Enhanced
 
-A NeoForge mod for Minecraft that replaces the vanilla villager trade screen with a dialogue
-window, laying the groundwork for a branching, reputation-aware conversation system.
-
-> **Status: in development.** The dialogue system works end to end in single-player and on
-> dedicated servers, but the mod has not had a tagged release yet.
-
-## What it does
-
-Right-clicking a villager opens a conversation instead of the trade GUI:
-
-- The villager's name, profession and trade level are shown.
-- **Trade** hands off to the real vanilla merchant screen, reputation discounts included.
-- **Leave** ends the conversation.
-- Villagers with nothing to sell — nitwits, the unemployed, babies — show a greyed-out Trade
-  option with an explanation rather than an empty trade window.
-
-**Sneak + right-click** skips the dialogue and opens the trade screen directly. Useful as a
-shortcut, and as a fallback if the dialogue system misbehaves.
-
-While a player is in conversation, the villager is marked busy and other players are told so,
-mirroring how vanilla treats a villager mid-trade.
-
-## Requirements
+A NeoForge mod that turns Minecraft's villagers from vending machines into people. Right-clicking
+a villager opens a conversation instead of a trade window — and they have names, opinions about
+you, and things to say about each other.
 
 | | |
 |---|---|
-| Minecraft | 26.2 |
-| NeoForge | 26.2.0.48-beta |
-| Java | 25 |
+| **Minecraft** | 26.2 |
+| **NeoForge** | 26.2.0.48-beta |
+| **Java** | 25 |
+| **Licence** | [MIT](LICENSE) |
 
-NeoForge 26.2 is a **beta** line and its APIs change without deprecation cycles. Expect
-breakage when bumping the loader version.
+> NeoForge 26.2 is a **beta** line whose APIs change without deprecation cycles. Expect breakage
+> when bumping the loader version.
+
+## What it does
+
+**Villagers have names.** Assigned per villager and remembered, distinct within a village, and
+drawn from different pools by biome so a desert settlement sounds unlike a taiga one. They keep
+their name through zombification and curing. A name tag still wins.
+
+**They decide how much to tell you.** A villager you have never spoken to is "the Farmer" until
+you ask their name — and someone who resents you will not tell you. What else they will do rises
+with how they feel about you:
+
+| Standing | They will |
+|---|---|
+| Reviled / Disliked | trade, accept gifts, tell you exactly what they think of you |
+| Stranger | …give you their name |
+| Acquaintance | …gossip about the neighbours |
+| Trusted | …show you what they are carrying |
+
+**They have opinions, and you can change them.** Reputation shows as a named tier rather than a
+number, and you can shift it by trading or by giving gifts — anything they would buy, or any
+food. Gifts cannot buy the highest regard; that still takes curing a zombie villager.
+
+**They talk about each other.** Ask what the others say about you and a villager relays their
+neighbours' opinions, by name. Minecraft has always run this gossip network — villagers form
+opinions and pass them around when they meet — and it has never been visible. A villager you have
+never met can already have an opinion of you, because they heard it from someone who has.
+
+**They remember you.** Greetings differ for a stranger, a returning acquaintance, and someone who
+has been away a few days.
+
+**They tell you when something happens.** Nearby players hear when a villager is born or killed,
+and by what.
+
+**Sneak + right-click** skips the conversation and trades directly.
+
+## Configuration
+
+**Mods → Villager Enhanced → Config**, or edit the files.
+
+Client settings are personal — voice volume, dialogue speed, whether to see notifications. Server
+settings are shared by everyone on the world: whether the dialogue is enabled at all, sneak-to-
+trade, whether a villager is occupied for a whole conversation, conversation range, gift value,
+rumour count and radius, and the notification radius.
+
+The split is deliberate: anything affecting what a player can *do* is a server setting, because a
+client-side value would simply be a switch to change the rules.
+
+Setting `dialogueEnabled` to false restores vanilla trading entirely, leaving the mod installed
+but dormant.
 
 ## Building
 
@@ -39,11 +69,11 @@ breakage when bumping the loader version.
 ./gradlew build
 ```
 
-The jar is written to `build/libs/`.
+The jar lands in `build/libs/`.
 
 ## Development
 
-Run configurations, all available from the Gradle tool window or your IDE after a sync:
+Run configurations, available from the Gradle tool window or your IDE after a sync:
 
 | Task | Purpose |
 |---|---|
@@ -52,34 +82,38 @@ Run configurations, all available from the Gradle tool window or your IDE after 
 | `runClientDev01` | Second client, playing as `dev01` |
 | `runClientDev02` | Third client, playing as `dev02` |
 
-The two numbered clients exist for multiplayer testing. Each needs its own username *and* its
-own game directory — clients sharing one directory fight over `options.txt`, the logs and the
-session lock. Start `runServer`, then connect both to `localhost`.
+The numbered clients are for multiplayer testing. Each needs its own username *and* its own game
+directory — clients sharing one fight over `options.txt`, the logs and the session lock. Start
+`runServer`, then connect both to `localhost`.
 
 ### Architecture
 
-The dialogue is **server-authoritative**. The server decides when a conversation starts, what
+The dialogue is **server-authoritative**. The server decides when a conversation starts, which
 options it offers, and whether to act on a choice; the client renders what it is told and sends
-choices back. Every inbound message is re-validated against the server's own view of the world
-before anything happens.
+choices back. Every inbound message is re-validated against the server's own view of the world.
 
 Code is split along the client/server boundary, which NeoForge enforces at class-load time:
 
 | Package | Loaded on | Contains |
 |---|---|---|
-| `dialogue` | both | Interaction handling, sessions, trade handoff |
-| `network` | both | Payload definitions, serverbound handlers |
+| `dialogue` | both | Interaction, sessions, names, memory, reputation, notifications |
+| `network` | both | Payload definitions and serverbound handlers |
+| `config` | both | The two config specs |
+| `attachment` | both | Saved per-villager data |
 | `client` | client only | Screens and clientbound handlers |
 
-Nothing in `dialogue` or `network` may reference `client` or any `net.minecraft.client` type —
-a dedicated server would crash the moment such a class loaded.
+Nothing in the common packages may reference `client` or any `net.minecraft.client` type — a
+dedicated server would crash the moment such a class loaded.
 
-`src/main/resources/META-INF/accesstransformer.cfg` widens exactly one vanilla method,
-`Villager#updateSpecialPrices`, which applies the reputation discount before trading.
+Villagers store two pieces of saved data via NeoForge attachments: their name, and what they
+remember about each player who has spoken to them.
+
+`src/main/resources/META-INF/accesstransformer.cfg` widens two vanilla members: the method that
+applies reputation discounts before trading, and the gossip container so gifts can affect it.
 
 ## Licence
 
 [MIT](LICENSE).
 
-`TEMPLATE_LICENSE.txt` covers the NeoForge MDK files this project was generated from — the
-Gradle build, the wrapper and the CI workflow — and is retained for that reason.
+`TEMPLATE_LICENSE.txt` covers the NeoForge MDK files this project was generated from — the Gradle
+build, the wrapper and the CI workflow — and is retained for that reason.
