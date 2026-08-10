@@ -11,6 +11,41 @@ saved data, config or the datapack schema; **MINOR** adds features; **PATCH** fi
 
 ## [Unreleased]
 
+## [0.10.0] - 2026-08-10
+
+You can build them a bell.
+
+### Added
+
+**A crafting recipe for the bell**
+
+- Minecraft has never had one. A bell can only be found in a village that generated with it, so a
+  village you built yourself has no way to get one — and the bell is not decoration. It is the
+  meeting point villagers gather at, and gathering is how they pass opinions to one another.
+  Every reputation, rumour and price this mod shows you is read from that gossip, so a
+  bell-less village runs the whole thing at a fraction of strength with nothing on screen to say
+  why.
+- Six stone, one stick and a gold block, arranged as a bell with an open mouth:
+
+  ```
+  stone  stick  stone
+  stone  gold   stone
+  stone         stone
+  ```
+
+- Nine gold ingots is deliberate. The bell is the centre of a working village, and it should
+  cost like it.
+- Appears in the recipe book as soon as you have gold or stone, so you find out it exists at the
+  point it becomes useful.
+
+### Notes
+
+- No protocol change; 0.10.0 talks to 0.9.0 clients and servers.
+- Requires Minecraft 26.2 and NeoForge 26.2.0.48-beta, as before.
+- The recipe is a datapack inside the mod jar, so a datapack of your own can override or disable
+  it in the usual way.
+- Nothing about existing bells changes, and no other vanilla recipe is touched.
+
 ## [0.9.0] - 2026-08-10
 
 Names above the heads of people you know.
@@ -387,7 +422,8 @@ First playable release. Requires Minecraft 26.2 and NeoForge 26.2.0.48-beta.
 - Verified on both single-player and dedicated servers, including two simultaneous players.
 - Wandering Traders are deliberately out of scope.
 
-[Unreleased]: https://github.com/TheMrPuffin/villager-enhanced/compare/v0.9.0...HEAD
+[Unreleased]: https://github.com/TheMrPuffin/villager-enhanced/compare/v0.10.0...HEAD
+[0.10.0]: https://github.com/TheMrPuffin/villager-enhanced/releases/tag/v0.10.0
 [0.9.0]: https://github.com/TheMrPuffin/villager-enhanced/releases/tag/v0.9.0
 [0.8.1]: https://github.com/TheMrPuffin/villager-enhanced/releases/tag/v0.8.1
 [0.8.0]: https://github.com/TheMrPuffin/villager-enhanced/releases/tag/v0.8.0

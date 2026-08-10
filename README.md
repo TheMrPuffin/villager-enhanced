@@ -50,6 +50,11 @@ reads as a record of who you know rather than a shortcut past asking.
 **They tell you when something happens.** Nearby players hear when a villager is born or killed,
 and by what, and when an iron golem is destroyed by something.
 
+**You can build them a bell.** Minecraft has no bell recipe, so a village you built yourself
+cannot have one — and the bell is the meeting point villagers gather at to pass opinions around.
+Since that gossip is what every reputation and rumour here is read from, this mod adds the recipe
+it needs: six stone, a stick and a gold block.
+
 **Sneak + right-click** skips the conversation and trades directly.
 
 |  |  |

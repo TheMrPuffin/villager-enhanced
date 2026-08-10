@@ -71,6 +71,26 @@ Off mining while a zombie gets into your village? You will hear about it.
 
 Golem deaths only count when something actually killed one, so an iron farm stays quiet.
 
+### You can build them a bell
+
+Minecraft has never had a bell recipe. If your village generated without one, or you built the
+village yourself, you cannot have one at all.
+
+That matters more here than it does in vanilla. The bell is the meeting point — it is where
+villagers gather at dusk and pass their opinions to one another. All the gossip above is read
+from that. A village with no bell quietly runs everything this mod does at a fraction of
+strength, and nothing tells you.
+
+So now you can make one. Six stone, a stick and a gold block, arranged as a bell:
+
+```
+stone  stick  stone
+stone  gold   stone
+stone         stone
+```
+
+Nine gold ingots is not cheap, and it is not meant to be.
+
 ### Still in a hurry?
 
 **Sneak + right-click** goes straight to trading, exactly as before.
