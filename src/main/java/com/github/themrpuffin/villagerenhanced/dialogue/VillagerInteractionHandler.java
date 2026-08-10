@@ -3,11 +3,16 @@ package com.github.themrpuffin.villagerenhanced.dialogue;
 import com.github.themrpuffin.villagerenhanced.VillagerEnhanced;
 import com.github.themrpuffin.villagerenhanced.config.ServerConfig;
 
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.npc.villager.Villager;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.SpawnEggItem;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
@@ -26,7 +31,8 @@ public final class VillagerInteractionHandler {
     private VillagerInteractionHandler() {}
 
     /**
-     * Is this a click we care about — main hand, on a live villager?
+     * Is this a click we care about — main hand, on a live villager, holding nothing vanilla has
+     * a better use for?
      *
      * <p>Says nothing about sneaking, because sneaking changes <i>what</i> we do rather than
      * <i>whether</i> we act.
@@ -48,7 +54,38 @@ public final class VillagerInteractionHandler {
             return false;
         }
 
-        return villager.isAlive();
+        if (!villager.isAlive()) {
+            return false;
+        }
+
+        // Some clicks are not ours to take.
+        return !isVanillaItemInteraction(event.getEntity(), villager, event.getHand());
+    }
+
+    /**
+     * Would vanilla treat this click as something more important than trading?
+     *
+     * <p>{@code Mob#checkAndHandleImportantInteractions} runs ahead of {@code mobInteract} and
+     * handles two things: applying a name tag, and breeding a mob with its own spawn egg. Our
+     * cancel lands earlier than either — {@code PlayerInteractEvent.EntityInteract} fires at the
+     * top of {@code Player#interactOn}, before the entity is consulted at all — so without this
+     * check the conversation silently swallows both, and a name tag simply stops working on
+     * villagers.
+     *
+     * <p>The conditions match vanilla's exactly, so a click vanilla <i>would</i> have ignored
+     * still opens the conversation rather than doing nothing: a blank name tag is not an
+     * interaction, and neither is a spawn egg for some other mob.
+     */
+    private static boolean isVanillaItemInteraction(Player player, Villager villager, InteractionHand hand) {
+        ItemStack stack = player.getItemInHand(hand);
+
+        // A name tag only acts once it has been named in an anvil. A blank one passes through.
+        if (stack.is(Items.NAME_TAG) && stack.get(DataComponents.CUSTOM_NAME) != null) {
+            return true;
+        }
+
+        // A villager spawn egg used on a villager produces a baby. Any other egg is not for them.
+        return SpawnEggItem.spawnsEntity(stack, villager.getType());
     }
 
     /**

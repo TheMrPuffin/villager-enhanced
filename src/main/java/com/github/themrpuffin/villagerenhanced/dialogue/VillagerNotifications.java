@@ -12,6 +12,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.animal.golem.IronGolem;
 import net.minecraft.world.entity.npc.villager.Villager;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -21,7 +22,8 @@ import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 /**
- * Tells nearby players when a villager is born or killed.
+ * Tells nearby players when something happens to the village: a villager born or killed, or a
+ * golem destroyed.
  *
  * <p>Losing a villager to a zombie while you are off mining is the sort of thing you want to
  * find out about at the time, not three days later when you notice the beds are empty.
@@ -62,6 +64,50 @@ public final class VillagerNotifications {
                     : Component.translatable(
                             "villagerenhanced.notification.killed", name, killer.getDisplayName());
         });
+    }
+
+    /**
+     * An iron golem was destroyed.
+     *
+     * <p>The golem is the village's own defence, so losing one is usually the first sign that
+     * something has got inside. Worth hearing about for the same reason a villager death is.
+     *
+     * <p><b>Only deaths with an attacker are announced.</b> Iron farms kill golems continuously
+     * using lava, magma or a drop, and none of those has an attacking entity — so this single
+     * check keeps a farm quiet without the mod having to recognise one. A player killing a golem
+     * does still count, deliberately: on a server that is how you learn somebody has been
+     * through your village.
+     */
+    @SubscribeEvent
+    public static void onGolemDeath(LivingDeathEvent event) {
+        if (!ServerConfig.NOTIFY_GOLEM_DEATHS.get()) {
+            return;
+        }
+        if (!(event.getEntity() instanceof IronGolem golem)) {
+            return;
+        }
+        if (!(golem.level() instanceof ServerLevel level)) {
+            return;
+        }
+
+        Entity killer = event.getSource().getEntity();
+        if (killer == null) {
+            return;
+        }
+
+        // A name tag wins, exactly as it does for villagers. Golems get no name from this mod,
+        // so anything else falls back to describing what was lost rather than who.
+        Component customName = golem.getCustomName();
+        Component subject = customName != null
+                ? customName
+                : Component.translatable("villagerenhanced.notification.golem");
+
+        Component message = Component.translatable(
+                "villagerenhanced.notification.golem_killed", subject, killer.getDisplayName());
+
+        // The same line for every recipient: unlike a villager, a golem is not someone you have
+        // been introduced to, so there is nothing to vary per player.
+        notifyNearby(level, golem, player -> message);
     }
 
     /** How far from a newborn to look for the adults that produced it. */

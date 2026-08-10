@@ -29,6 +29,9 @@ public final class ClientConfig {
     /** Whether to show messages about villagers being born or killed nearby. */
     public static final ModConfigSpec.BooleanValue SHOW_NOTIFICATIONS;
 
+    /** Whether a villager's name appears above their head while you look at them. */
+    public static final ModConfigSpec.BooleanValue SHOW_OVERHEAD_NAMES;
+
     static {
         ModConfigSpec.Builder builder = new ModConfigSpec.Builder();
 
@@ -57,6 +60,15 @@ public final class ClientConfig {
                         "this is your own switch for whether to see them.")
                 .translation("villagerenhanced.config.show_notifications")
                 .define("showNotifications", true);
+
+        SHOW_OVERHEAD_NAMES = builder
+                .comment(
+                        "Whether a villager's name appears above their head while you look at them.",
+                        "Only villagers who have told you their name will show one, so this is a",
+                        "reminder of who you already know rather than a way to skip asking.",
+                        "Villagers you have name-tagged are unaffected either way.")
+                .translation("villagerenhanced.config.show_overhead_names")
+                .define("showOverheadNames", true);
 
         builder.pop();
         SPEC = builder.build();

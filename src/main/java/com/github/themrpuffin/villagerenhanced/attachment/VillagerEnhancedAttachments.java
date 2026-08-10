@@ -6,9 +6,12 @@ import java.util.function.Supplier;
 
 import com.github.themrpuffin.villagerenhanced.VillagerEnhanced;
 import com.github.themrpuffin.villagerenhanced.dialogue.PlayerRelationship;
+import com.github.themrpuffin.villagerenhanced.dialogue.VillagerMemory;
 import com.mojang.serialization.Codec;
 
 import net.minecraft.core.UUIDUtil;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.world.entity.npc.villager.Villager;
 import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
@@ -37,13 +40,26 @@ public final class VillagerEnhancedAttachments {
      * <p>An empty string means "not yet named". {@code getData} attaches the default on first
      * call, so callers must check {@code hasData} first if they need to distinguish the two.
      *
-     * <p>Not synced. The client learns names from {@code OpenDialoguePayload}. If names are ever
-     * rendered above villagers' heads, add {@code .sync(...)} here rather than writing a packet.
+     * <p><b>Synced only to players the villager has introduced themselves to.</b> The sync
+     * predicate is the whole of the "you have to ask" rule for names rendered above heads: a
+     * client that was never told the name simply has no attachment to draw, so the rule is
+     * enforced on the server rather than by asking the client to keep a secret it holds.
+     *
+     * <p>The predicate is allowed to change from false to true — {@code AttachmentSync} re-checks
+     * it per player on every update — but it must never go the other way, because nothing would
+     * take an already-sent name back. Introductions are never revoked, so that holds.
+     *
+     * <p>Because a name syncing depends on a <i>relationship</i> changing rather than the name
+     * itself, {@link VillagerMemory#introduce} has to ask for the re-send explicitly.
      */
     public static final Supplier<AttachmentType<String>> VILLAGER_NAME = ATTACHMENT_TYPES.register(
             "villager_name",
             () -> AttachmentType.<String>builder(() -> "")
                     .serialize(Codec.STRING.fieldOf("name"))
+                    .sync(
+                            (holder, to) -> holder instanceof Villager villager
+                                    && VillagerMemory.isIntroduced(villager, to),
+                            ByteBufCodecs.STRING_UTF8)
                     .build());
 
     /**

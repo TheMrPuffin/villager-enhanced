@@ -54,6 +54,9 @@ public final class ServerConfig {
     /** Whether nearby players are told when a villager is born. */
     public static final ModConfigSpec.BooleanValue NOTIFY_VILLAGER_BIRTHS;
 
+    /** Whether nearby players are told when an iron golem is killed. */
+    public static final ModConfigSpec.BooleanValue NOTIFY_GOLEM_DEATHS;
+
     /** How close a player must be to be told, in blocks. */
     public static final ModConfigSpec.IntValue NOTIFICATION_RADIUS;
 
@@ -136,6 +139,15 @@ public final class ServerConfig {
                 .comment("Whether nearby players are told when a villager is born.")
                 .translation("villagerenhanced.config.notify_births")
                 .define("notifyVillagerBirths", true);
+
+        NOTIFY_GOLEM_DEATHS = builder
+                .comment(
+                        "Whether nearby players are told when an iron golem is killed.",
+                        "Only deaths caused by another entity are announced, which keeps iron farms",
+                        "quiet without having to recognise one: lava, magma and drops have no",
+                        "attacker. Turn this off if you kill golems by hand.")
+                .translation("villagerenhanced.config.notify_golem_deaths")
+                .define("notifyGolemDeaths", true);
 
         NOTIFICATION_RADIUS = builder
                 .comment(

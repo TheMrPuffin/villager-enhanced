@@ -43,10 +43,12 @@ opinions and pass them around when they meet — and it has never been visible. 
 never met can already have an opinion of you, because they heard it from someone who has.
 
 **They remember you.** Greetings differ for a stranger, a returning acquaintance, and someone who
-has been away a few days.
+has been away a few days. Look at a villager who has told you their name and it appears above
+their head — only theirs, and only for the players they have introduced themselves to, so it
+reads as a record of who you know rather than a shortcut past asking.
 
 **They tell you when something happens.** Nearby players hear when a villager is born or killed,
-and by what.
+and by what, and when an iron golem is destroyed by something.
 
 **Sneak + right-click** skips the conversation and trades directly.
 
@@ -59,10 +61,11 @@ and by what.
 
 **Mods → Villager Enhanced → Config**, or edit the files.
 
-Client settings are personal — voice volume, dialogue speed, whether to see notifications. Server
-settings are shared by everyone on the world: whether the dialogue is enabled at all, sneak-to-
-trade, whether a villager is occupied for a whole conversation, conversation range, gift value,
-rumour count and radius, and the notification radius.
+Client settings are personal — voice volume, dialogue speed, whether names show above villagers'
+heads, whether to see notifications. Server settings are shared by everyone on the world: whether
+the dialogue is enabled at all, sneak-to-trade, whether a villager is occupied for a whole
+conversation, conversation range, gift value, rumour count and radius, which events are
+announced, and the notification radius.
 
 The split is deliberate: anything affecting what a player can *do* is a server setting, because a
 client-side value would simply be a switch to change the rules.
@@ -107,13 +110,19 @@ Code is split along the client/server boundary, which NeoForge enforces at class
 | `network` | both | Payload definitions and serverbound handlers |
 | `config` | both | The two config specs |
 | `attachment` | both | Saved per-villager data |
-| `client` | client only | Screens and clientbound handlers |
+| `client` | client only | Screens, clientbound handlers, name plate rendering |
 
 Nothing in the common packages may reference `client` or any `net.minecraft.client` type — a
 dedicated server would crash the moment such a class loaded.
 
 Villagers store two pieces of saved data via NeoForge attachments: their name, and what they
 remember about each player who has spoken to them.
+
+The name is synced to clients so it can be drawn above the villager's head — but **only to
+players that villager has introduced themselves to**, using the attachment's per-player sync
+predicate. A client that was never told the name has nothing to render, so "you have to ask" is
+enforced on the server rather than relying on the client to withhold something it already holds.
+Relationships are never synced at all.
 
 `src/main/resources/META-INF/accesstransformer.cfg` widens two vanilla members: the method that
 applies reputation discounts before trading, and the gossip container so gifts can affect it.

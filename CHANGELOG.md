@@ -11,6 +11,54 @@ saved data, config or the datapack schema; **MINOR** adds features; **PATCH** fi
 
 ## [Unreleased]
 
+## [0.9.0] - 2026-08-10
+
+Names above the heads of people you know.
+
+### Added
+
+**Villagers you have met show their name when you look at them**
+
+- Look at a villager and their name appears above their head, the same way it does for a mob you
+  have name-tagged.
+- **Only villagers who have told you their name.** Someone you have never spoken to stays
+  anonymous, so this is a reminder of who you know rather than a way around asking. On a server
+  each player sees only the names they have earned — two people looking at the same villager can
+  see different things.
+- Turn it off under **Mods → Villager Enhanced → Config**, alongside your other personal
+  settings.
+
+**You are told when an iron golem is killed**
+
+- The golem is the village's defence, and losing one is usually the first sign something has got
+  in.
+- Only deaths caused by something are announced. Iron farms kill golems with lava, magma and
+  drops, none of which has an attacker, so a farm stays quiet without you having to turn this
+  off. A golem killed by a player still counts — on a server that is how you learn someone has
+  been through your village.
+- Has its own switch, separate from villager deaths and births.
+
+### Fixed
+
+- **Name tags did not work on villagers.** The dialogue took over the click before Minecraft
+  considered what you were holding, so a named tag did nothing at all. Both README and the
+  Modrinth page claimed name tags took priority; now they actually do.
+- **Villager spawn eggs did not work on villagers either** — the same cause. Using one on a
+  villager produces a baby again, as in vanilla.
+- A blank name tag, or a spawn egg for some other mob, still opens the conversation. Only clicks
+  Minecraft would itself have acted on are handed back.
+
+### Notes
+
+- Network protocol version raised to `8`. Clients and servers must both be on 0.9.0. Nothing the
+  mod sends has changed shape, but villager names are now synced to clients, and a 0.8.x client
+  cannot read one.
+- Requires Minecraft 26.2 and NeoForge 26.2.0.48-beta, as before.
+- Names are only sent to players who have been introduced, so a client is never holding a name
+  it has not earned.
+- Existing worlds need nothing. Villagers you had already been introduced to show their names
+  straight away.
+
 ## [0.8.1] - 2026-08-09
 
 Fixes from actually playing it.
@@ -339,7 +387,8 @@ First playable release. Requires Minecraft 26.2 and NeoForge 26.2.0.48-beta.
 - Verified on both single-player and dedicated servers, including two simultaneous players.
 - Wandering Traders are deliberately out of scope.
 
-[Unreleased]: https://github.com/TheMrPuffin/villager-enhanced/compare/v0.8.1...HEAD
+[Unreleased]: https://github.com/TheMrPuffin/villager-enhanced/compare/v0.9.0...HEAD
+[0.9.0]: https://github.com/TheMrPuffin/villager-enhanced/releases/tag/v0.9.0
 [0.8.1]: https://github.com/TheMrPuffin/villager-enhanced/releases/tag/v0.8.1
 [0.8.0]: https://github.com/TheMrPuffin/villager-enhanced/releases/tag/v0.8.0
 [0.7.0]: https://github.com/TheMrPuffin/villager-enhanced/releases/tag/v0.7.0

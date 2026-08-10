@@ -52,6 +52,10 @@ for it. Hurt someone and word travels just as fast.
 Villagers know whether they have met you, and greet a stranger differently from someone they know
 — or from someone who has not been round in a while.
 
+Look at someone who has given you their name and it appears above their head, the way it does for
+a mob you have name-tagged. Strangers stay anonymous. On a server every player sees only the
+names they have earned, so two people looking at the same villager can see different things.
+
 The better they know you, the more they will do. A stranger will give you their name. Someone who
 likes you will gossip. Someone who properly trusts you will show you what they are carrying —
 which, since Minecraft villagers really do carry bread and seeds and use them to eat, plant and
@@ -63,6 +67,9 @@ Off mining while a zombie gets into your village? You will hear about it.
 
 > *Mira the Librarian was killed by a Zombie.*
 > *A child was born to Aldric the Farmer and Fenna the Shepherd.*
+> *The village's iron golem was struck down by a Zombie.*
+
+Golem deaths only count when something actually killed one, so an iron farm stays quiet.
 
 ### Still in a hurry?
 
@@ -75,10 +82,10 @@ off and leaves the mod dormant.
 
 Everything is adjustable from **Mods → Villager Enhanced → Config**.
 
-Your own settings cover voice volume, how fast dialogue appears, and whether you see
-notifications. World settings — for whoever runs the server — cover whether the dialogue is
-enabled at all, how far conversations reach, how generous gifts are, how much villagers gossip,
-and how far news travels.
+Your own settings cover voice volume, how fast dialogue appears, whether names show above
+villagers' heads, and whether you see notifications. World settings — for whoever runs the
+server — cover whether the dialogue is enabled at all, how far conversations reach, how generous
+gifts are, how much villagers gossip, which events are announced, and how far news travels.
 
 ## Compatibility
 

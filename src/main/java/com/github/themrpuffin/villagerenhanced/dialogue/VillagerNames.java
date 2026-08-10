@@ -168,8 +168,13 @@ public final class VillagerNames {
      *
      * <p>Checks {@code hasData} first because {@code getData} attaches the default value on its
      * first call, which would make every villager look named the moment anything asked.
+     *
+     * <p><b>On the client this doubles as "has this villager told me their name?"</b> The
+     * attachment only syncs to players who have been introduced, so an empty result there means
+     * the villager is still a stranger — no relationship lookup needed, and none possible, since
+     * relationships stay on the server.
      */
-    private static String storedName(Villager villager) {
+    public static String storedName(Villager villager) {
         return villager.hasData(VillagerEnhancedAttachments.VILLAGER_NAME)
                 ? villager.getData(VillagerEnhancedAttachments.VILLAGER_NAME)
                 : "";

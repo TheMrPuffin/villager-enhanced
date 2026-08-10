@@ -12,7 +12,10 @@ import net.minecraft.world.entity.player.Player;
 /**
  * What villagers remember about the people they have met.
  *
- * <p>Reads are safe anywhere; writes are server-side, since the attachment is not synced.
+ * <p>Reads are safe anywhere; writes are server-side, since the relationships attachment is not
+ * synced — one player's standing with a villager is nobody else's business, and the client never
+ * needs it. What the client does get is the villager's <i>name</i>, and only once introduced;
+ * see {@code VillagerEnhancedAttachments.VILLAGER_NAME}.
  */
 public final class VillagerMemory {
 
@@ -39,9 +42,17 @@ public final class VillagerMemory {
         return get(villager, player).introduced();
     }
 
-    /** Records that this villager has given this player their name. */
+    /**
+     * Records that this villager has given this player their name.
+     *
+     * <p>The name attachment only syncs to players who have been introduced, and that has just
+     * become true for this one. Nothing has touched the name itself, so nothing would resend it
+     * on its own — without the explicit request the name would not appear above the villager's
+     * head until they next came back into view.
+     */
     public static void introduce(Villager villager, Player player) {
         put(villager, player, get(villager, player).withIntroduced());
+        villager.syncData(VillagerEnhancedAttachments.VILLAGER_NAME);
     }
 
     /**

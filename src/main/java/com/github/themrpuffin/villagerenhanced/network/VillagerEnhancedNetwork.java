@@ -29,7 +29,11 @@ public final class VillagerEnhancedNetwork {
     // 7: added VillagerNotificationPayload. The payload set is part of the protocol, not just
     //    the shape of individual payloads -- a client that has never registered a type cannot
     //    receive it.
-    private static final String NETWORK_VERSION = "7";
+    // 8: the villager_name attachment became synced. Nothing here changed, but attachment sync
+    //    rides NeoForge's own channel, which this version guard is the only thing protecting:
+    //    a client whose copy of the attachment has no sync handler throws on receiving one
+    //    (AttachmentSync#receiveSyncedDataAttachments) rather than ignoring it.
+    private static final String NETWORK_VERSION = "8";
 
     private VillagerEnhancedNetwork() {}
 
