@@ -7,6 +7,7 @@ import com.github.themrpuffin.villagerenhanced.VillagerEnhanced;
 import com.github.themrpuffin.villagerenhanced.config.ServerConfig;
 import com.github.themrpuffin.villagerenhanced.network.VillagerNotificationPayload;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -15,6 +16,7 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.animal.golem.IronGolem;
 import net.minecraft.world.entity.npc.villager.Villager;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
@@ -191,6 +193,23 @@ public final class VillagerNotifications {
 
         for (ServerPlayer player : level.getPlayers(p -> p.distanceToSqr(about) <= radiusSqr)) {
             PacketDistributor.sendToPlayer(player, new VillagerNotificationPayload(message.forPlayer(player)));
+        }
+    }
+
+    /**
+     * Sends the same line to every player close enough to care, centred on a place rather than a
+     * mob.
+     *
+     * <p>Used for things that happen to the village as a whole — see {@link VillageThreats} —
+     * where there is no villager to centre on and nothing that varies by who is listening.
+     */
+    public static void announceNear(ServerLevel level, BlockPos where, Component message) {
+        double radius = ServerConfig.NOTIFICATION_RADIUS.get();
+        double radiusSqr = radius * radius;
+        Vec3 centre = Vec3.atCenterOf(where);
+
+        for (ServerPlayer player : level.getPlayers(p -> p.distanceToSqr(centre) <= radiusSqr)) {
+            PacketDistributor.sendToPlayer(player, new VillagerNotificationPayload(message));
         }
     }
 

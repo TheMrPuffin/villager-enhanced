@@ -57,6 +57,12 @@ reads as a record of who you know rather than a shortcut past asking.
 **They tell you when something happens.** Nearby players hear when a villager is born or killed,
 and by what, and when an iron golem is destroyed by something.
 
+**You get thirty seconds' warning before a raid.** Carrying Bad Omen into a village starts a
+countdown before the raid actually breaks, which the game never mentions. Villagers react to it
+too — walk in carrying an omen and they are afraid of you. **Ringing a bell during a raid lights
+up every raider in it**, at any distance and through walls, and tells you how many are left; the
+last raider stuck out of sight is what drags a raid on.
+
 **You can build them a bell.** Minecraft has no bell recipe, so a village you built yourself
 cannot have one — and the bell is the meeting point villagers gather at to pass opinions around.
 Since that gossip is what every reputation and rumour here is read from, this mod adds the recipe
@@ -85,7 +91,7 @@ Client settings are personal — voice volume, dialogue speed, whether names sho
 heads, whether to see notifications. Server settings are shared by everyone on the world: whether
 the dialogue is enabled at all, sneak-to-trade, whether a villager is occupied for a whole
 conversation, conversation range, gift value, rumour count and radius, which events are
-announced, and the notification radius.
+announced, the notification radius, and the raid settings.
 
 The split is deliberate: anything affecting what a player can *do* is a server setting, because a
 client-side value would simply be a switch to change the rules.

@@ -101,6 +101,13 @@ public final class DialogueBuilder {
      * {@code noteConversation} runs after the greeting is composed, not before.
      */
     private static Component greetingFor(ServerPlayer player, Villager villager) {
+        // A village under attack outranks every pleasantry. Nobody remarks that you have been
+        // away a few days while pillagers are coming over the fence.
+        Component underThreat = VillageThreats.greetingUnderThreat(player, villager);
+        if (underThreat != null) {
+            return underThreat;
+        }
+
         if (!VillagerMemory.isIntroduced(villager, player)) {
             return Component.translatable("villagerenhanced.dialogue.greeting.stranger");
         }

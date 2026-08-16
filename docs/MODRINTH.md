@@ -125,6 +125,28 @@ hands it straight back and says why, rather than eating your diamonds. Earn thei
 
 And if you would rather just eat it, you can. It is worth twice a golden apple.
 
+### You get warning before a raid
+
+A raid does not simply start. Carrying Bad Omen into a village begins a **thirty second**
+countdown, and only then does the raid break. Minecraft has never told you this is happening.
+
+> *An omen hangs over the village. It breaks in 30 seconds.*
+
+Villagers notice too. Walk in carrying an omen and they are afraid of *you* — and they have
+rather more urgent things to say while a raid is on than they did that morning.
+
+### And a way to find the last raider
+
+You know the one. The raid is nearly over, one pillager spawned badly and is stuck in a ravine
+somewhere, and you are walking in circles.
+
+Ring a bell during a raid and **every raider in it lights up for thirty seconds** — at any
+distance, through walls and rock. The bell also tells you how many are left, which is what helps
+when one is too far away to draw at all.
+
+Vanilla does technically do this: for three seconds, within 48 blocks, and only when a raider is
+already within 32 — which is the one you had already found.
+
 ### Still in a hurry?
 
 **Sneak + right-click** goes straight to trading, exactly as before.
@@ -139,7 +161,8 @@ Everything is adjustable from **Mods → Villager Enhanced → Config**.
 Your own settings cover voice volume, how fast dialogue appears, whether names show above
 villagers' heads, and whether you see notifications. World settings — for whoever runs the
 server — cover whether the dialogue is enabled at all, how far conversations reach, how generous
-gifts are, how much villagers gossip, which events are announced, and how far news travels.
+gifts are, how much villagers gossip, which events are announced, how far news travels, and how
+long the bell lights up raiders.
 
 ## Compatibility
 

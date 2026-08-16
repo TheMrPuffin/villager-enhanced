@@ -57,6 +57,12 @@ public final class ServerConfig {
     /** Whether nearby players are told when an iron golem is killed. */
     public static final ModConfigSpec.BooleanValue NOTIFY_GOLEM_DEATHS;
 
+    /** Whether nearby players are warned about raids, and told how they end. */
+    public static final ModConfigSpec.BooleanValue NOTIFY_RAIDS;
+
+    /** How long ringing a bell lights up the raiders in a raid, in seconds. 0 disables it. */
+    public static final ModConfigSpec.IntValue RAID_GLOW_SECONDS;
+
     /** How close a player must be to be told, in blocks. */
     public static final ModConfigSpec.IntValue NOTIFICATION_RADIUS;
 
@@ -158,6 +164,31 @@ public final class ServerConfig {
                         "nothing happens out there to be told about.")
                 .translation("villagerenhanced.config.notification_radius")
                 .defineInRange("notificationRadius", 128, 16, 256);
+
+        builder.pop();
+
+        // Its own section rather than living under notifications: only half of this is a
+        // notification, and someone looking for raid settings looks for the word "raid".
+        builder.comment("Raids — being warned about them, and finding the raiders.").push("raids");
+
+        NOTIFY_RAIDS = builder
+                .comment(
+                        "Whether nearby players are warned about raids and told how they end.",
+                        "Three messages: the thirty seconds between an omen being carried into a",
+                        "village and the raid breaking, the raid starting, and whether it was won.",
+                        "Villagers still react to a raid in conversation whatever this is set to.")
+                .translation("villagerenhanced.config.notify_raids")
+                .define("notifyRaids", true);
+
+        RAID_GLOW_SECONDS = builder
+                .comment(
+                        "How long ringing a bell during a raid lights up its raiders, in seconds.",
+                        "Vanilla already does this, but for 3 seconds, only within 48 blocks, and",
+                        "only if a raider is already within 32 -- which is exactly the raider you",
+                        "can already see. This covers every raider in the raid at any distance,",
+                        "which is what makes the last one findable. Set to 0 to leave vanilla alone.")
+                .translation("villagerenhanced.config.raid_glow_seconds")
+                .defineInRange("raidGlowSeconds", 30, 0, 120);
 
         builder.pop();
         SPEC = builder.build();

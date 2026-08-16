@@ -11,6 +11,50 @@ saved data, config or the datapack schema; **MINOR** adds features; **PATCH** fi
 
 ## [Unreleased]
 
+## [0.13.0] - 2026-08-16
+
+Half a minute's warning, and a way to find the last one.
+
+### Added
+
+**You are warned before a raid, not during it**
+
+- A raid does not simply begin. Carrying Bad Omen into a village starts a **thirty second**
+  countdown, and only then does the raid break. Nothing in the game tells you this is happening.
+  Now it does.
+
+  > *An omen hangs over the village. It breaks in 30 seconds.*
+
+- You are also told when the raid starts, and whether the village held.
+- Deliberately three messages and no more. A raid runs for minutes, and a line per wave turns a
+  warning into a running commentary.
+
+**Villagers react to it**
+
+- Walk into a village carrying an omen and they are afraid of *you*.
+- They say something different while a raid is coming, while it is happening, and once it is won.
+- This does not depend on the notification setting. Turning off chat messages asks for less
+  noise, not for villagers to ignore an attack.
+
+**Ringing the bell lights up the raiders**
+
+- The last raider spawning badly and getting stuck out of sight is the thing that drags a raid
+  out. Ring a bell during one and every raider in it glows for thirty seconds — **at any
+  distance**, through walls and rock.
+- Vanilla technically does this already, for three seconds, within 48 blocks, and only if a
+  raider is already within 32 — which is the raider you had already found.
+- The bell also tells you how many are left, which is the part that still helps when a raider is
+  too far away to be drawn at all.
+- Adjustable, or off, under **Raids** in the settings.
+
+### Notes
+
+- No protocol change; 0.13.0 talks to 0.12.0 clients and servers.
+- Requires Minecraft 26.2 and NeoForge 26.2.0.48-beta, as before.
+- Zombie sieges are deliberately not announced. The game gives no signal until a second or two
+  before the zombies arrive, and a warning that lands with the thing it warns about is not one.
+- Existing worlds need nothing.
+
 ## [0.12.0] - 2026-08-16
 
 Why your village stopped growing.
@@ -493,7 +537,8 @@ First playable release. Requires Minecraft 26.2 and NeoForge 26.2.0.48-beta.
 - Verified on both single-player and dedicated servers, including two simultaneous players.
 - Wandering Traders are deliberately out of scope.
 
-[Unreleased]: https://github.com/TheMrPuffin/villager-enhanced/compare/v0.12.0...HEAD
+[Unreleased]: https://github.com/TheMrPuffin/villager-enhanced/compare/v0.13.0...HEAD
+[0.13.0]: https://github.com/TheMrPuffin/villager-enhanced/releases/tag/v0.13.0
 [0.12.0]: https://github.com/TheMrPuffin/villager-enhanced/releases/tag/v0.12.0
 [0.11.0]: https://github.com/TheMrPuffin/villager-enhanced/releases/tag/v0.11.0
 [0.10.0]: https://github.com/TheMrPuffin/villager-enhanced/releases/tag/v0.10.0
