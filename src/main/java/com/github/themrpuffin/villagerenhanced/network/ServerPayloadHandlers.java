@@ -119,6 +119,7 @@ public final class ServerPayloadHandlers {
             case RUMOURS -> DialogueBuilder.send(player, villager, DialoguePage.RUMOURS);
             case ASK_ABOUT_WORK -> DialogueBuilder.send(player, villager, DialoguePage.WORK);
             case SHOW_BELONGINGS -> DialogueBuilder.send(player, villager, DialoguePage.BELONGINGS);
+            case ASK_ABOUT_FAMILY -> DialogueBuilder.send(player, villager, DialoguePage.FAMILY);
             // Back climbs one level rather than jumping to the greeting, so a question returns
             // to the list it was asked from.
             case BACK -> DialogueBuilder.send(player, villager, page.parent());

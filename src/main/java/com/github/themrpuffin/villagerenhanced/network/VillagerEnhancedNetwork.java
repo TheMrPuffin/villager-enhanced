@@ -33,7 +33,9 @@ public final class VillagerEnhancedNetwork {
     //    rides NeoForge's own channel, which this version guard is the only thing protecting:
     //    a client whose copy of the attachment has no sync handler throws on receiving one
     //    (AttachmentSync#receiveSyncedDataAttachments) rather than ignoring it.
-    private static final String NETWORK_VERSION = "8";
+    // 9: DialogueOption gained ASK_ABOUT_FAMILY. Options travel as ordinals, so a client whose
+    //    enum is one shorter throws in byId rather than ignoring the value.
+    private static final String NETWORK_VERSION = "9";
 
     private VillagerEnhancedNetwork() {}
 

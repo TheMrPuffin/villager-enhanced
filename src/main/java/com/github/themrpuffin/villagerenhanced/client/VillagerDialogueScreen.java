@@ -369,6 +369,7 @@ public class VillagerDialogueScreen extends Screen {
             case TOPICS -> Component.translatable("villagerenhanced.dialogue.option.topics");
             case ASK_ABOUT_WORK -> Component.translatable("villagerenhanced.dialogue.option.ask_about_work");
             case SHOW_BELONGINGS -> Component.translatable("villagerenhanced.dialogue.option.show_belongings");
+            case ASK_ABOUT_FAMILY -> Component.translatable("villagerenhanced.dialogue.option.ask_about_family");
             case BACK -> Component.translatable("villagerenhanced.dialogue.option.back");
             case LEAVE -> Component.translatable("villagerenhanced.dialogue.option.leave");
         };
@@ -382,6 +383,7 @@ public class VillagerDialogueScreen extends Screen {
             case ASK_NAME -> Component.translatable("villagerenhanced.dialogue.no_name");
             case RUMOURS -> Component.translatable("villagerenhanced.dialogue.no_rumours");
             case SHOW_BELONGINGS -> Component.translatable("villagerenhanced.dialogue.no_belongings");
+            case ASK_ABOUT_FAMILY -> Component.translatable("villagerenhanced.dialogue.no_family");
             case VIEW_REPUTATION, ASK_ABOUT_WORK, TOPICS, BACK, LEAVE -> null;
         };
     }

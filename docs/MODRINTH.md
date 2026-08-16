@@ -29,6 +29,10 @@ villager and you have done something the whole village will remember.
 You can also simply be generous. Offer a villager something they would buy, or any food, and
 their opinion improves — though generosity alone will never earn you the highest regard.
 
+Gifts a villager can actually use go **into their inventory** rather than disappearing. Villagers
+live off what they carry — they eat from it, plant from it, and pass food to neighbours who want
+to raise a family. So a gift of bread is not a gesture. It is dinner.
+
 ![Where you stand with a villager](https://raw.githubusercontent.com/TheMrPuffin/villager-enhanced/main/docs/images/regards.png)
 
 ### They talk about each other
@@ -60,6 +64,20 @@ The better they know you, the more they will do. A stranger will give you their 
 likes you will gossip. Someone who properly trusts you will show you what they are carrying —
 which, since Minecraft villagers really do carry bread and seeds and use them to eat, plant and
 raise families, tells you more than you might expect.
+
+### They tell you why the village stopped growing
+
+Ask a villager who knows you well enough whether they see themselves starting a family, and they
+will tell you what is standing in the way.
+
+Minecraft has always required two things before villagers will breed — enough food, and a spare
+bed for the child — and has never once told you which is missing. So a village quietly stops
+growing and you are left guessing.
+
+> *I'd like to, and I've food enough put by for it.*
+> *But there's nowhere to put a child — not a spare bed in the whole village.*
+
+Hand them a few bread and ask again.
 
 ### They tell you what happened
 

@@ -30,12 +30,19 @@ with how they feel about you:
 |---|---|
 | Reviled / Disliked | trade, accept gifts, tell you exactly what they think of you |
 | Stranger | …give you their name |
-| Acquaintance | …gossip about the neighbours |
+| Acquaintance | …gossip about the neighbours, and talk about starting a family |
 | Trusted | …show you what they are carrying |
 
 **They have opinions, and you can change them.** Reputation shows as a named tier rather than a
 number, and you can shift it by trading or by giving gifts — anything they would buy, or any
-food. Gifts cannot buy the highest regard; that still takes curing a zombie villager.
+food. Gifts cannot buy the highest regard; that still takes curing a zombie villager. Anything a
+villager can actually use goes into their inventory rather than vanishing, so a gift of bread
+feeds them for real.
+
+**They tell you why the village stopped growing.** Ask whether they see themselves starting a
+family and they say what is stopping them. Minecraft has always needed two things for a villager
+to breed — enough food, and a spare bed for the child — and has never mentioned either. *"There's
+nowhere to put a child"* is a diagnosis you cannot get any other way.
 
 **They talk about each other.** Ask what the others say about you and a villager relays their
 neighbours' opinions, by name. Minecraft has always run this gossip network — villagers form

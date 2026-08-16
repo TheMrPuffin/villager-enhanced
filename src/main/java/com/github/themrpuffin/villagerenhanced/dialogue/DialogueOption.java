@@ -62,7 +62,16 @@ public enum DialogueOption {
      * <p>Never gated: the questions behind it carry their own requirements, and a branch that
      * refuses to open tells the player nothing about why.
      */
-    TOPICS(null);
+    TOPICS(null),
+    /**
+     * Ask whether they see themselves starting a family.
+     *
+     * <p>Gated at Acquaintance: personal enough that a stranger would think it none of your
+     * business, but ordinary conversation with someone who knows you. Sits at the same tier as
+     * rumours rather than the higher one belongings needs — asking about someone's plans is less
+     * of an intrusion than being shown what is in their pockets.
+     */
+    ASK_ABOUT_FAMILY(ReputationTier.ACQUAINTANCE);
 
     /** Lowest standing at which this option is available, or null if it is never gated. */
     private final @Nullable ReputationTier minimumStanding;

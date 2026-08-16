@@ -11,6 +11,46 @@ saved data, config or the datapack schema; **MINOR** adds features; **PATCH** fi
 
 ## [Unreleased]
 
+## [0.12.0] - 2026-08-16
+
+Why your village stopped growing.
+
+### Added
+
+**"Do you ever think you'll start a family?"**
+
+- A new question under **Ask about…**, for villagers who know you well enough to answer.
+- They tell you whether they would, **and what is stopping them** — which is the useful part.
+  Minecraft has always had two separate requirements for a villager to breed, and has never
+  mentioned either: enough food, and a spare bed for the child. A village that has quietly
+  stopped growing is usually missing one of them, and nothing on screen ever says so.
+
+  > *I'd like to, and I've food enough put by for it.*
+  > *But there's nowhere to put a child — not a spare bed in the whole village.*
+
+- Also covers children, and anyone who has recently had one and would like a moment's peace.
+- The bed check matches the game's own: the same search radius, and a bed walled off where they
+  cannot reach it does not count. Asking never claims a bed — only an actual birth does that.
+
+**Gifts a villager can use are kept, not swallowed**
+
+- Give a villager food or seeds and it goes **into their inventory** instead of vanishing.
+  Villagers live off that inventory: they eat from it, plant from it, hand food to villagers who
+  want to breed, and throw the surplus to their neighbours.
+- So three bread now genuinely changes the answer to the question above. Give it to someone who
+  just told you they have nothing put by, and ask again.
+- You can see it afterwards under **"What are you carrying?"**.
+- Only things they would actually use are kept — a villager's inventory is eight slots, and
+  stuffing it with emeralds would stop a farmer collecting their own harvest. Everything else is
+  accepted as a gesture and consumed, exactly as before, and improves their opinion of you either
+  way.
+
+### Notes
+
+- **Network protocol version raised to `9`. Clients and servers must both be on 0.12.0.**
+- Requires Minecraft 26.2 and NeoForge 26.2.0.48-beta, as before.
+- Existing worlds need nothing.
+
 ## [0.11.0] - 2026-08-16
 
 Teach a villager their trade.
@@ -453,7 +493,8 @@ First playable release. Requires Minecraft 26.2 and NeoForge 26.2.0.48-beta.
 - Verified on both single-player and dedicated servers, including two simultaneous players.
 - Wandering Traders are deliberately out of scope.
 
-[Unreleased]: https://github.com/TheMrPuffin/villager-enhanced/compare/v0.11.0...HEAD
+[Unreleased]: https://github.com/TheMrPuffin/villager-enhanced/compare/v0.12.0...HEAD
+[0.12.0]: https://github.com/TheMrPuffin/villager-enhanced/releases/tag/v0.12.0
 [0.11.0]: https://github.com/TheMrPuffin/villager-enhanced/releases/tag/v0.11.0
 [0.10.0]: https://github.com/TheMrPuffin/villager-enhanced/releases/tag/v0.10.0
 [0.9.0]: https://github.com/TheMrPuffin/villager-enhanced/releases/tag/v0.9.0

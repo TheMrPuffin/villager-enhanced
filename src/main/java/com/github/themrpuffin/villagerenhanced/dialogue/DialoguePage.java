@@ -29,6 +29,8 @@ public enum DialoguePage {
     WORK,
     /** What this villager is carrying. */
     BELONGINGS,
+    /** Whether this villager sees themselves starting a family, and what is stopping them. */
+    FAMILY,
     /**
      * What a villager says just after accepting a diamond apple.
      *
@@ -62,7 +64,7 @@ public enum DialoguePage {
             // acting rather than navigating, so its Back goes to where the action was taken.
             case GREETING, INTRODUCTION, TUTORED, APPLE_REFUSED -> GREETING;
             case TOPICS -> GREETING;
-            case REPUTATION, RUMOURS, WORK, BELONGINGS -> TOPICS;
+            case REPUTATION, RUMOURS, WORK, BELONGINGS, FAMILY -> TOPICS;
         };
     }
 }

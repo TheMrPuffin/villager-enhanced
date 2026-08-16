@@ -89,6 +89,7 @@ public final class DialogueBuilder {
             case RUMOURS -> VillagerRumours.gather(player, villager);
             case WORK -> VillagerWork.describe(villager);
             case BELONGINGS -> VillagerBelongings.describe(villager);
+            case FAMILY -> VillagerFamily.describe(villager);
         };
     }
 
@@ -118,7 +119,7 @@ public final class DialogueBuilder {
             // several, and either way the conversation carries on from where it was.
             case GREETING, INTRODUCTION, TUTORED, APPLE_REFUSED -> greetingOptions(player, villager);
             case TOPICS -> topicOptions(player, villager);
-            case REPUTATION, RUMOURS, WORK, BELONGINGS -> List.of(
+            case REPUTATION, RUMOURS, WORK, BELONGINGS, FAMILY -> List.of(
                     new DialogueOptionEntry(DialogueOption.BACK, true),
                     new DialogueOptionEntry(DialogueOption.LEAVE, true));
         };
@@ -136,6 +137,8 @@ public final class DialogueBuilder {
 
         return List.of(
                 entry(DialogueOption.ASK_ABOUT_WORK, standing, true),
+                // Next to their work, since both are questions about them rather than about you.
+                entry(DialogueOption.ASK_ABOUT_FAMILY, standing, true),
                 entry(DialogueOption.VIEW_REPUTATION, standing, true),
                 entry(DialogueOption.RUMOURS, standing, true),
                 entry(DialogueOption.SHOW_BELONGINGS, standing, true),
