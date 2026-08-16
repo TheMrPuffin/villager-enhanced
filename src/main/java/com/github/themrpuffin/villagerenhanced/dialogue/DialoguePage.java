@@ -28,7 +28,27 @@ public enum DialoguePage {
     /** What this villager does for a living. */
     WORK,
     /** What this villager is carrying. */
-    BELONGINGS;
+    BELONGINGS,
+    /**
+     * What a villager says just after accepting a diamond apple.
+     *
+     * <p>Exists for the same reason {@link #INTRODUCTION} does. Levelling someone up otherwise
+     * changes a number in the window subtitle and nothing else, which reads as though the apple
+     * was swallowed for no effect. Having them say what changed makes it land.
+     *
+     * <p>Adding a page is <b>not</b> a protocol change — pages never cross the wire; the payload
+     * carries composed lines and options, not which page produced them.
+     */
+    TUTORED,
+    /**
+     * Why a villager would not take the diamond apple you offered.
+     *
+     * <p>A separate page because the apple is <b>not consumed</b> when refused — sixteen valuable
+     * items quietly becoming a small reputation bump would be a trap, so the player is told
+     * instead. The reason is recomputed from the villager and the player's standing rather than
+     * passed in, since everything it depends on is still true when the page is built.
+     */
+    APPLE_REFUSED;
 
     /**
      * Where "Back" leads from here.
@@ -38,8 +58,9 @@ public enum DialoguePage {
      */
     public DialoguePage parent() {
         return switch (this) {
-            // Already the root; Back is never offered on either.
-            case GREETING, INTRODUCTION -> GREETING;
+            // Already the root; Back is never offered on any of them. TUTORED is reached by
+            // acting rather than navigating, so its Back goes to where the action was taken.
+            case GREETING, INTRODUCTION, TUTORED, APPLE_REFUSED -> GREETING;
             case TOPICS -> GREETING;
             case REPUTATION, RUMOURS, WORK, BELONGINGS -> TOPICS;
         };

@@ -36,6 +36,11 @@ public enum DialogueOption {
      *
      * <p>Never gated. Gifts are the route back from a bad reputation; locking them would strand
      * a player who made one mistake with no way to make amends.
+     *
+     * <p>This is also how a diamond apple is offered — see {@link VillagerTutoring}. The apple
+     * <i>does</i> require standing, but that is enforced on the outcome rather than on this
+     * option: the button stays clickable and the villager explains the refusal, which keeps the
+     * never-gated promise intact and is better feedback besides.
      */
     GIFT(null),
     /** Ask what the other villagers nearby think of you — confided only to people they like. */

@@ -8,6 +8,7 @@ import com.github.themrpuffin.villagerenhanced.dialogue.DialogueSessionManager;
 import com.github.themrpuffin.villagerenhanced.dialogue.VillagerGifts;
 import com.github.themrpuffin.villagerenhanced.dialogue.VillagerMemory;
 import com.github.themrpuffin.villagerenhanced.dialogue.VillagerTrading;
+import com.github.themrpuffin.villagerenhanced.dialogue.VillagerTutoring;
 
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
@@ -88,12 +89,23 @@ public final class ServerPayloadHandlers {
                 }
             }
             case GIFT -> {
-                // Re-checked inside give(), since the player may have swapped items between the
-                // page being sent and the button being clicked.
-                VillagerGifts.give(player, villager);
-                // Resend either way: on success the Gift option may now be disabled because the
-                // last of the stack was handed over, and on failure the page corrects itself.
-                DialogueBuilder.send(player, villager, DialoguePage.GREETING);
+                // A diamond apple is food, so the ordinary gift path would accept it and turn
+                // sixteen valuable items into a small reputation bump. It is intercepted here
+                // instead: taken and acted on if the villager can use it and trusts the player,
+                // and otherwise left in hand with the villager explaining why.
+                if (VillagerTutoring.isHoldingApple(player)) {
+                    DialogueBuilder.send(player, villager, VillagerTutoring.offer(player, villager)
+                            ? DialoguePage.TUTORED
+                            : DialoguePage.APPLE_REFUSED);
+                } else {
+                    // Re-checked inside give(), since the player may have swapped items between
+                    // the page being sent and the button being clicked.
+                    VillagerGifts.give(player, villager);
+                    // Resend either way: on success the Gift option may now be disabled because
+                    // the last of the stack was handed over, and on failure the page corrects
+                    // itself.
+                    DialogueBuilder.send(player, villager, DialoguePage.GREETING);
+                }
             }
             case ASK_NAME -> {
                 // The introduction page rather than the plain greeting, so the villager actually

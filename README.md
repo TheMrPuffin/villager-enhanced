@@ -55,12 +55,20 @@ cannot have one — and the bell is the meeting point villagers gather at to pas
 Since that gossip is what every reputation and rumour here is read from, this mod adds the recipe
 it needs: six stone, a stick and a gold block.
 
+**You can make them better at their trade.** A **diamond apple** — eight diamonds around a golden
+one — raises a villager one trade level when you offer it in conversation, or frees a nitwit to
+take up a trade at all. They will only accept one from someone they already trust, and will hand
+it straight back otherwise rather than quietly eating it. It is also edible, at twice a golden
+apple.
+
 **Sneak + right-click** skips the conversation and trades directly.
 
 |  |  |
 |---|---|
 | ![Where you stand with a villager](docs/images/regards.png) | ![What the other villagers say](docs/images/gossip.png) |
 | Where you stand with one villager | What the rest of the village says about you |
+| ![Crafting a bell](docs/images/bell-recipe.png) | ![Crafting a diamond apple](docs/images/diamond-apple-recipe.png) |
+| The bell recipe — note the empty slot below the gold | The diamond apple: eight diamonds around a golden apple |
 
 ## Configuration
 

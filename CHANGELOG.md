@@ -11,6 +11,37 @@ saved data, config or the datapack schema; **MINOR** adds features; **PATCH** fi
 
 ## [Unreleased]
 
+## [0.11.0] - 2026-08-16
+
+Teach a villager their trade.
+
+### Added
+
+**The diamond apple**
+
+- A new item: eight diamonds around a golden apple.
+- Offer one to a villager in conversation — the same **"Offer what you're holding"** you already
+  use for gifts — and they gain a **trade level**. New stock, better prices, one step nearer
+  mastering their craft. Four apples take someone from Novice to Master.
+- Offer one to a **nitwit** and they stop being a nitwit. They become an ordinary unemployed
+  villager, free to claim a workstation and take up a trade like anyone else — something vanilla
+  never allows. Have a job site ready; they will go looking.
+- **They will only accept one from someone who already trusts you.** Anyone else hands it back
+  and says why, rather than quietly eating your diamonds. The same goes for a villager who has
+  already mastered their trade, or has no trade to better yet — three different refusals, each
+  said out loud.
+- A villager who accepts one tells you what changed, rather than a number in the corner quietly
+  ticking over.
+- It is also **edible**, worth twice a golden apple: 8 hunger, Regeneration II for ten seconds
+  and Absorption for four minutes.
+
+### Notes
+
+- No protocol change; 0.11.0 talks to 0.10.0 clients and servers.
+- Requires Minecraft 26.2 and NeoForge 26.2.0.48-beta, as before.
+- The recipe is a datapack inside the mod jar, so your own datapack can override or disable it.
+- Existing worlds need nothing.
+
 ## [0.10.0] - 2026-08-10
 
 You can build them a bell.
@@ -422,7 +453,8 @@ First playable release. Requires Minecraft 26.2 and NeoForge 26.2.0.48-beta.
 - Verified on both single-player and dedicated servers, including two simultaneous players.
 - Wandering Traders are deliberately out of scope.
 
-[Unreleased]: https://github.com/TheMrPuffin/villager-enhanced/compare/v0.10.0...HEAD
+[Unreleased]: https://github.com/TheMrPuffin/villager-enhanced/compare/v0.11.0...HEAD
+[0.11.0]: https://github.com/TheMrPuffin/villager-enhanced/releases/tag/v0.11.0
 [0.10.0]: https://github.com/TheMrPuffin/villager-enhanced/releases/tag/v0.10.0
 [0.9.0]: https://github.com/TheMrPuffin/villager-enhanced/releases/tag/v0.9.0
 [0.8.1]: https://github.com/TheMrPuffin/villager-enhanced/releases/tag/v0.8.1

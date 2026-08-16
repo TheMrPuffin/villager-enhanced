@@ -3,6 +3,7 @@ package com.github.themrpuffin.villagerenhanced;
 import com.github.themrpuffin.villagerenhanced.attachment.VillagerEnhancedAttachments;
 import com.github.themrpuffin.villagerenhanced.config.ClientConfig;
 import com.github.themrpuffin.villagerenhanced.config.ServerConfig;
+import com.github.themrpuffin.villagerenhanced.item.VillagerEnhancedItems;
 import com.mojang.logging.LogUtils;
 
 import net.neoforged.bus.api.IEventBus;
@@ -34,6 +35,7 @@ public class VillagerEnhanced {
     /** FML supplies these; it recognises the parameter types and passes them in. */
     public VillagerEnhanced(IEventBus modEventBus, ModContainer modContainer) {
         VillagerEnhancedAttachments.ATTACHMENT_TYPES.register(modEventBus);
+        VillagerEnhancedItems.ITEMS.register(modEventBus);
 
         // CLIENT lives in each player's own files and is never consulted by the server; SERVER
         // lives with the world and is synced to clients on join. Which of the two a value goes

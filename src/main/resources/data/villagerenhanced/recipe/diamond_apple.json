@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "D": "minecraft:diamond",
+    "A": "minecraft:golden_apple"
+  },
+  "pattern": [
+    "DDD",
+    "DAD",
+    "DDD"
+  ],
+  "result": {
+    "id": "villagerenhanced:diamond_apple"
+  }
+}

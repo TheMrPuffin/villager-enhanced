@@ -76,6 +76,16 @@ public final class DialogueBuilder {
                                 "villagerenhanced.dialogue.reputation.body_plain", name, tier));
             }
             case TOPICS -> List.of(Component.translatable("villagerenhanced.dialogue.topics.body"));
+            // Reached only straight after an apple is accepted, so the villager's current state
+            // says which of the two things just happened to them.
+            case TUTORED -> VillagerTutoring.wasFreedFromNitwittery(villager)
+                    ? List.of(
+                            Component.translatable("villagerenhanced.dialogue.tutored.nitwit"),
+                            Component.translatable("villagerenhanced.dialogue.tutored.nitwit.next"))
+                    : List.of(Component.translatable(
+                            "villagerenhanced.dialogue.tutored.level",
+                            villager.getVillagerData().level()));
+            case APPLE_REFUSED -> List.of(VillagerTutoring.refusalFor(player, villager));
             case RUMOURS -> VillagerRumours.gather(player, villager);
             case WORK -> VillagerWork.describe(villager);
             case BELONGINGS -> VillagerBelongings.describe(villager);
@@ -104,7 +114,9 @@ public final class DialogueBuilder {
     public static List<DialogueOptionEntry> optionsFor(
             ServerPlayer player, Villager villager, DialoguePage page) {
         return switch (page) {
-            case GREETING, INTRODUCTION -> greetingOptions(player, villager);
+            // Both apple outcomes offer the greeting's options: the apple may have been one of
+            // several, and either way the conversation carries on from where it was.
+            case GREETING, INTRODUCTION, TUTORED, APPLE_REFUSED -> greetingOptions(player, villager);
             case TOPICS -> topicOptions(player, villager);
             case REPUTATION, RUMOURS, WORK, BELONGINGS -> List.of(
                     new DialogueOptionEntry(DialogueOption.BACK, true),
@@ -154,6 +166,8 @@ public final class DialogueBuilder {
 
         // Nitwits, the unemployed and babies have no offers.
         options.add(entry(DialogueOption.TRADE, standing, !villager.getOffers().isEmpty()));
+        // A diamond apple goes through here too, since it is food and therefore always
+        // acceptable. What it does on the way through is decided in ServerPayloadHandlers.
         options.add(entry(DialogueOption.GIFT, standing,
                 VillagerGifts.isAcceptable(villager, player.getMainHandItem())));
         // Everything you ask rather than do lives behind this, which keeps the greeting to the

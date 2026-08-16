@@ -81,15 +81,31 @@ villagers gather at dusk and pass their opinions to one another. All the gossip 
 from that. A village with no bell quietly runs everything this mod does at a fraction of
 strength, and nothing tells you.
 
-So now you can make one. Six stone, a stick and a gold block, arranged as a bell:
+So now you can make one. Six stone, a stick and a gold block, arranged as a bell — note the empty
+slot beneath the gold, which is the bell's open mouth.
 
-```
-stone  stick  stone
-stone  gold   stone
-stone         stone
-```
+![Crafting a bell](https://raw.githubusercontent.com/TheMrPuffin/villager-enhanced/main/docs/images/bell-recipe.png)
 
 Nine gold ingots is not cheap, and it is not meant to be.
+
+### You can make them better at their trade
+
+Villagers get better by trading, slowly, and nitwits never get better at all. The **diamond
+apple** changes both.
+
+Offer one to a villager in conversation and they gain a trade level — new stock, better prices,
+one step closer to mastering their craft. Offer one to a **nitwit** and something quietly
+remarkable happens: they stop being a nitwit, and can take up a trade like anyone else.
+
+![Crafting a diamond apple](https://raw.githubusercontent.com/TheMrPuffin/villager-enhanced/main/docs/images/diamond-apple-recipe.png)
+
+Eight diamonds around a golden apple. That is deliberate — an apple is expensive to make once,
+and levelling villagers is the thing the whole trade economy rests on.
+
+They will not take one from just anyone, either. A villager who does not already **trust** you
+hands it straight back and says why, rather than eating your diamonds. Earn their trust first.
+
+And if you would rather just eat it, you can. It is worth twice a golden apple.
 
 ### Still in a hurry?
 

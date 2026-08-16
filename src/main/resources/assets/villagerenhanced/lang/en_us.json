@@ -1,4 +1,6 @@
 {
+  "item.villagerenhanced.diamond_apple": "Diamond Apple",
+
   "villagerenhanced.dialogue.greeting": "Hello, %s!",
   "villagerenhanced.dialogue.greeting.stranger": "Yes? Something you needed?",
   "villagerenhanced.dialogue.greeting.absent": "It's been a while, %s.",
@@ -41,6 +43,13 @@
   "villagerenhanced.dialogue.no_name": "They don't care to introduce themselves to you.",
   "villagerenhanced.dialogue.no_rumours": "They don't know you well enough to talk about the neighbours. Trade with them a few times.",
   "villagerenhanced.dialogue.no_belongings": "They'd have to trust you a good deal more before showing you that.",
+  "villagerenhanced.dialogue.apple.not_trusted": "They turn the apple over once, then hand it back. They don't know you well enough to take something like that from you.",
+  "villagerenhanced.dialogue.apple.nothing_left_to_learn": "They smile and push it back to you. There's nothing left in this trade for them to learn.",
+  "villagerenhanced.dialogue.apple.no_trade_yet": "They look at it blankly and hand it back. There's no trade for it to make better yet.",
+
+  "villagerenhanced.dialogue.tutored.level": "Something's clearer now. I know this trade better than I did — level %s.",
+  "villagerenhanced.dialogue.tutored.nitwit": "Oh. Oh, that's... I've been standing here a long time, haven't I?",
+  "villagerenhanced.dialogue.tutored.nitwit.next": "Find me something to work at. I think I could take to it now.",
 
   "villagerenhanced.narration.unavailable": "%s — unavailable. %s",
 
