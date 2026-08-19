@@ -6,10 +6,51 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 uses [Semantic Versioning](https://semver.org/). For a Minecraft mod that means **MAJOR** breaks
 saved data, config or the datapack schema; **MINOR** adds features; **PATCH** fixes bugs.
 
-> **Pre-1.0.** The mod targets a beta NeoForge line, and persistence and the dialogue datapack
-> schema are not designed yet. Expect breaking changes between minor versions until 1.0.0.
+> **From 1.0.0, MAJOR is a promise.** Saved data keeps its shape, config keys keep their names,
+> and `dialogueEnabled = false` keeps restoring vanilla trading. Breaking any of those means
+> 2.0.0. The network protocol is deliberately outside that promise — it is internal, carries its
+> own version, and rejects mismatched clients at connect time rather than misreading them.
 
 ## [Unreleased]
+
+## [1.0.0] - 2026-08-18
+
+Finished, and staying that way.
+
+Nothing here is new. 1.0.0 is a promise about what already exists, made now that the two things
+it was waiting on have both happened: NeoForge 26.2 has left beta, and the mod has been played
+rather than only built.
+
+### What 1.0.0 commits to
+
+- **Your worlds keep working.** Villager names and everything a villager remembers about you keep
+  their stored shape. Fields may be added later — they have defaults — but nothing already saved
+  will stop being read.
+- **Settings keep their names.** Renaming a config key silently resets it for whoever had tuned
+  it, so they stay put.
+- **The escape hatch stays.** `dialogueEnabled = false` will always restore ordinary vanilla
+  trading, leaving the mod installed but dormant.
+
+Breaking any of those would be 2.0.0.
+
+**Not covered:** the network protocol between client and server. It is internal, it is already
+versioned, and it turns a version mismatch into a clean refusal to connect rather than a subtle
+misreading. Expect it to keep changing, and expect clients and servers to need matching versions.
+
+### Changed
+
+- **Now built against NeoForge `26.2.0.62`**, the stable line, up from `26.2.0.48-beta`. Requires
+  26.2.0.62 or newer.
+- **The mod icon appears in the Mods list again.** NeoForge split the old `logoFile` setting into
+  a separate icon and banner, and only the banner kept the old name working — so the icon had
+  quietly stopped being shown.
+
+### Notes
+
+- No protocol change; 1.0.0 talks to 0.13.0 clients and servers.
+- Requires Minecraft 26.2 and NeoForge 26.2.0.62 or newer.
+- Existing worlds need nothing.
+- Still no mixins.
 
 ## [0.13.0] - 2026-08-16
 
@@ -537,7 +578,8 @@ First playable release. Requires Minecraft 26.2 and NeoForge 26.2.0.48-beta.
 - Verified on both single-player and dedicated servers, including two simultaneous players.
 - Wandering Traders are deliberately out of scope.
 
-[Unreleased]: https://github.com/TheMrPuffin/villager-enhanced/compare/v0.13.0...HEAD
+[Unreleased]: https://github.com/TheMrPuffin/villager-enhanced/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/TheMrPuffin/villager-enhanced/releases/tag/v1.0.0
 [0.13.0]: https://github.com/TheMrPuffin/villager-enhanced/releases/tag/v0.13.0
 [0.12.0]: https://github.com/TheMrPuffin/villager-enhanced/releases/tag/v0.12.0
 [0.11.0]: https://github.com/TheMrPuffin/villager-enhanced/releases/tag/v0.11.0

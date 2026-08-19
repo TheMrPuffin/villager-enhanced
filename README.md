@@ -8,13 +8,36 @@ you, and things to say about each other.
 
 | | |
 |---|---|
+| **Version** | 1.0.0 |
 | **Minecraft** | 26.2 |
-| **NeoForge** | 26.2.0.48-beta |
+| **NeoForge** | 26.2.0.62 or newer |
 | **Java** | 25 |
 | **Licence** | [MIT](LICENSE) |
 
-> NeoForge 26.2 is a **beta** line whose APIs change without deprecation cycles. Expect breakage
-> when bumping the loader version.
+> NeoForge 26.2 is now a **stable** line. `26.2.0.62` is both the version this is built against
+> and the minimum it will run on, since the mod metadata declares `[26.2.0.62,)`.
+
+## What 1.0 promises
+
+**Your worlds keep working.** Villager names, and what each villager remembers about each player,
+keep their stored shape. Fields may be added later — they carry defaults — but nothing already
+saved stops being read.
+
+**Settings keep their names.** Renaming a config key silently resets it for anyone who had tuned
+it, so keys stay put.
+
+**The escape hatch stays.** `dialogueEnabled = false` will always restore ordinary vanilla
+trading, leaving the mod installed but dormant.
+
+Breaking any of those means 2.0.0.
+
+**Deliberately not covered:** the client/server protocol. It is internal and already carries its
+own version, which turns a mismatch into a clean refusal to connect rather than a subtle
+misreading — so it will keep changing, and clients and servers will keep needing to match.
+
+1.0 was never going to mean "packmakers can extend it". Data-driven dialogue is parked, and a
+version number promising stability should promise it about things that exist rather than about a
+format invented to justify the number.
 
 ## What it does
 

@@ -32,11 +32,23 @@ displayName="${mod_name}" #mandatory
 # The mod icon shown in the Mods list. The path is relative to the root of the built jar, and
 # anything in src/main/resources/ lands there -- so this file lives at
 # src/main/resources/villagerenhanced.png
-logoFile="villagerenhanced.png"
+#
+# These replaced logoFile/logoBlur, which NeoForge now warns about. The rename is not cosmetic:
+# the one image was split into two roles, and they resolve differently.
+#
+#   iconFile   -- drawn as a SQUARE in the mod list. Reads iconFile ONLY; there is no fallback
+#                 to logoFile, so a mod still on the old key shows no icon at all.
+#   bannerFile -- drawn at its own aspect ratio across the info panel. Falls back to logoFile,
+#                 which is why nothing looked broken enough to notice.
+#
+# Only iconFile is set: this image is a 512x512 square drawn as an icon, and a square stretched
+# across the banner slot is not what that panel is for.
+iconFile="villagerenhanced.png"
 
 # false keeps the icon crisp instead of smoothing it, which is what you want for pixel art.
 # Set to true if the icon is a smooth/photographic image that looks harsh unscaled.
-logoBlur=false
+# Also renamed -- iconBlur does not fall back to logoBlur either.
+iconBlur=false
 
 # A text field displayed in the mod UI
 #credits="" #optional

@@ -174,5 +174,13 @@ long the bell lights up raiders.
 
 ## A note on versions
 
-This targets a **beta** NeoForge line, and the mod is pre-1.0. Expect changes between versions,
-and check the changelog before updating a world you care about.
+Needs Minecraft **26.2** and NeoForge **26.2.0.62 or newer**.
+
+**1.0 is a promise, not a milestone.** Your worlds keep working — villager names and everything a
+villager remembers about you keep their stored shape. Settings keep their names, so nothing you
+have tuned gets quietly reset. And `dialogueEnabled = false` will always give you plain vanilla
+trading back, with the mod installed but dormant. Breaking any of those means 2.0.
+
+One thing is deliberately outside that promise: the connection between client and server. It is
+internal, it carries its own version, and a mismatch is refused at the door rather than
+misunderstood. **Clients and servers need matching versions**, and that will keep being true.
